@@ -19,7 +19,7 @@ const ArmyProvider = ({ children }) => {
       updatedArray[itemIndex].Name = armyDetails.Name;
       setArmies(updatedArray);
 
-  };
+  }; 
 
   return (
     <ArmyContext.Provider value={{ armies, addArmy, editArmy }}>

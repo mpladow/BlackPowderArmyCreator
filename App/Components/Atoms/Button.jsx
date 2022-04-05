@@ -26,8 +26,10 @@ export default Button
 const styles = StyleSheet.create({
     button: {
         borderWidth: 1,
-        paddingVertical: 4,
-        paddingHorizontal: 8
+        paddingVertical: 8,
+        paddingHorizontal: 8*2,
+        alignItems: 'center',
+        borderRadius: 16
     },
     backgroundPrimary: {
 backgroundColor: 'green'
