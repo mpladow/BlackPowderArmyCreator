@@ -16,6 +16,7 @@ import Input from "../Components/Atoms/Input";
 import { Controller, useForm } from "react-hook-form";
 import { onChange } from "react-native-reanimated";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import ListItemSpacer from "../Components/Atoms/ListItemSpacer";
 
 const Summary = () => {
   const [showArmyModal, setShowArmyModal] = useState(false);
@@ -47,11 +48,15 @@ const Summary = () => {
   };
   return (
     <View>
+      <View style={{paddingVertical: 10, paddingHorizontal: 20}}>
       <Text>
         A lst of every single Black Powder army built. Cna include number of{" "}
       </Text>
+      </View>
       <FlatList
         data={DATA}
+        ListHeaderComponent={() => (<View style={{borderBottomWidth: 1, borderColor: '#000', paddingHorizontal: 20, paddingVertical: 10}}><Text style={{fontWeight: 'bold'}}>All Armies</Text></View>)}
+        ItemSeparatorComponent={() => (<ListItemSpacer/>)}
         renderItem={(item) => <ListItem title={item.item.title} />}
         keyExtractor={(item) => item.id}
       />
