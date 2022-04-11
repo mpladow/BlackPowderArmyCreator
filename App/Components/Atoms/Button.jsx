@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native'
+import { StyleSheet, View, Pressable } from 'react-native'
+import Text from '../Atoms/Text';
 import React from 'react'
 
 const Button = (props) => {
@@ -15,7 +16,7 @@ const Button = (props) => {
   return (
     <Pressable onPress={props.onPress}>
         <View style={[styles.button, getStyle()]}>
-      <Text style={{color: 'white'}}>{props.children}</Text>
+      <Text>{props.children}</Text>
         </View>
     </Pressable>
   )

@@ -1,8 +1,10 @@
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, View, Pressable } from "react-native";
 import React from "react";
 import Summary from "./Summary";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
+import Text from '../Components/Atoms/Text';
+import ProfileButton from "../Profile/ProfileButton";
 
 const HomeStack = () => {
   const Stack = createNativeStackNavigator();
@@ -13,9 +15,7 @@ const HomeStack = () => {
       screenOptions={{
         headerShown: true,
         headerRight: () => (
-          <Pressable onPress={() => nav.navigate("Settings")}>
-            <Text>ML</Text>
-          </Pressable>
+          <ProfileButton onPress={() => nav.navigate("Settings")}/>
         ),
       }}
     >

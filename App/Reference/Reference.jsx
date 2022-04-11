@@ -1,19 +1,23 @@
 import {
-  Modal,
   StyleSheet,
-  Text,
   View,
   Pressable,
   Dimensions,
+  FlatList
 } from "react-native";
 import React, { useState } from "react";
-import { FlatList } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { FontAwesome } from "@expo/vector-icons";
 import Button from "../Components/Atoms/Button";
 import CommandRef from "./CommandRef";
 import ReferenceListItem from "./Atoms/ReferenceListItem";
 import ListItemSpacer from "../Components/Atoms/ListItemSpacer";
+import { useArmyContext } from "../../Contexts/ArmyContext";
+import Text from '../Components/Atoms/Text';
+import { Colors } from "../../Constants/Styling";
+import { useTheme } from '@react-navigation/native';
+import { useThemeContext } from "../../Contexts/ThemeContext";
+import CustomModal from "../Components/Atoms/ModalCustom";
 
 const Reference = () => {
   const [focusedItem, setFocusedItem] = useState();
@@ -23,6 +27,8 @@ const Reference = () => {
     setFocusedItem(item);
     setShowModal(!showModal);
   };
+  const theme = useTheme();
+  const currentTheme = useThemeContext()
   const referenceItems = [
     { id: 1, name: "Command", onPress: (item) => onPressHandler(item) },
     { id: 2, name: "Movement", onPress: (item) => onPressHandler(item) },
@@ -74,17 +80,9 @@ const Reference = () => {
           )}
         />
       </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={showModal}
-        onRequestClose={() => {
-          setShowModal(!showModal);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <KeyboardAwareScrollView>
+
+        <CustomModal toggleModalVisible={() => setShowModal(!showModal)} showModal={showModal} > 
+        <KeyboardAwareScrollView>
               <View style={styles.modalHeader}>
                 <Text>Create Army</Text>
                 <Pressable onPress={onCloseHandler}>
@@ -98,9 +96,7 @@ const Reference = () => {
                 </Button>
               </View>
             </KeyboardAwareScrollView>
-          </View>
-        </View>
-      </Modal>
+        </CustomModal>
     </>
   );
 };
@@ -117,8 +113,12 @@ const styles = StyleSheet.create({
     marginTop: 22,
     paddingHorizontal: 4,
   },
+  modalLight: {
+    backgroundColor: Colors.offWhite1,
+  },
+  modalDark: {backgroundColor: Colors.grey2},
+
   modalView: {
-    backgroundColor: "white",
     borderRadius: 20,
     justifyContent: "center",
     shadowColor: "#000",

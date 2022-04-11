@@ -1,18 +1,18 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, useColorScheme  } from "react-native";
 import Router from "./Navigation/Router";
-import ThemeProvider from "./Contexts/ThemeContext";
+import ThemeProvider, { useThemeContext } from "./Contexts/ThemeContext";
 import ArmyProvider from "./Contexts/ArmyContext";
-import React from "react";
+import React, { useState } from "react";
+import { NavigationContainer,    DefaultTheme,
+  DarkTheme, } from "@react-navigation/native";
+import { Colors } from "./Constants/Styling";
+
 export default function App() {
   return (
-    <View style={styles.container}>
-      {/* <Text>Open up App.js to start working on your app!</Text> */}
-      
+      <ThemeProvider>
         <Router />
-
-      <StatusBar style="auto" />
-    </View>
+        </ThemeProvider>
   );
 }
 

@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  Text,
   View,
   FlatList,
   Modal,
@@ -17,6 +16,10 @@ import { Controller, useForm } from "react-hook-form";
 import { onChange } from "react-native-reanimated";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import ListItemSpacer from "../Components/Atoms/ListItemSpacer";
+import Text from '../Components/Atoms/Text'
+import CustomModal from "../Components/Atoms/ModalCustom";
+import TextContainer from "../Components/Atoms/TextContainer";
+
 
 const Summary = () => {
   const [showArmyModal, setShowArmyModal] = useState(false);
@@ -48,11 +51,9 @@ const Summary = () => {
   };
   return (
     <View>
-      <View style={{paddingVertical: 10, paddingHorizontal: 20}}>
-      <Text>
-        A lst of every single Black Powder army built. Cna include number of{" "}
-      </Text>
-      </View>
+      <TextContainer>
+        <Text> A lst of every single Black Powder army built. Cna include number of different armies</Text>
+      </TextContainer>
       <FlatList
         data={DATA}
         ListHeaderComponent={() => (<View style={{borderBottomWidth: 1, borderColor: '#000', paddingHorizontal: 20, paddingVertical: 10}}><Text style={{fontWeight: 'bold'}}>All Armies</Text></View>)}
@@ -67,17 +68,8 @@ const Summary = () => {
           </Button>
         </ButtonContainer>
       </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={showArmyModal}
-        onRequestClose={() => {
-          setShowArmyModal(!showArmyModal);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <KeyboardAwareScrollView>
+      <CustomModal toggleModalVisible={() => setShowArmyModal(!showArmyModal)} showModal={showArmyModal} > 
+      <KeyboardAwareScrollView>
             <View style={styles.modalHeader}>
                 <Text>Create Army</Text>
                 <Pressable onPress={()=> setShowArmyModal(false)}><FontAwesome name="times" size={24} color="black" /></Pressable>
@@ -102,9 +94,7 @@ const Summary = () => {
               </Button>
             </View>
             </KeyboardAwareScrollView>
-          </View>
-        </View>
-      </Modal>
+      </CustomModal>
     </View>
   );
 };

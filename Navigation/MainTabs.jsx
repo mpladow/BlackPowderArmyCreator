@@ -7,13 +7,16 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useNavigation } from '@react-navigation/native';
 import Reference from "../App/Reference/Reference";
+import { useThemeContext } from "../Contexts/ThemeContext";
 
 const MainTabs = () => {
   const Tab = createBottomTabNavigator();
+  const theme = useThemeContext();
 
-  const nav = useNavigation()
   return (
     <Tab.Navigator screenOptions={{
+      tabBarInactiveTintColor: theme.isDarkTheme? theme.DarkThemeCustom.Text : theme.DarkThemeCustom.Text,
+      tabBarAccessibilityLabel: theme.isDarkTheme? theme.DarkThemeCustom.primary : theme.DarkThemeCustom.primary,
       headerShown: false, headerShadowVisible: false}}>
       <Tab.Screen
         options={{
@@ -25,13 +28,13 @@ const MainTabs = () => {
         component={HomeStack} />
       <Tab.Screen options={{
         tabBarIcon:
-        ({color, size}) => (<MaterialCommunityIcons name="scoreboard-outline" size={24} color="black" />)}} 
-        name="Scoring" 
+        ({color, size}) => (<MaterialCommunityIcons name="scoreboard-outline" size={24} color={color} />)}} 
+        name="Tracker" 
         component={ScoringStack} />
               <Tab.Screen options={{
                 headerShown: true,
         tabBarIcon:
-        ({color, size}) => (<Entypo name="text-document" size={24} color="black" />)}} 
+        ({color, size}) => (<Entypo name="text-document" size={24} color={color} />)}} 
         name="Reference" 
         component={Reference} />
     </Tab.Navigator>

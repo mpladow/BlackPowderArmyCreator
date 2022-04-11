@@ -8,7 +8,7 @@ const ScoringStack = () => {
   return (
     <Stack.Navigator>
         <Stack.Group>
-            <Stack.Screen name='Scoring' component={Summary}/>
+            <Stack.Screen name='Tracker' component={Summary}/>
         </Stack.Group>
     </Stack.Navigator>
   )

@@ -35,5 +35,6 @@ export const useArmyContext = () => {
   if (!context) {
     throw new Error("useArmyContext can only be used wtihin an ArmyProvider")
   }
+  return context;
 }
 const styles = StyleSheet.create({});
