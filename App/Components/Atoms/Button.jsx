@@ -1,12 +1,20 @@
 import { StyleSheet, View, Pressable } from 'react-native'
 import Text from '../Atoms/Text';
 import React from 'react'
+import { useThemeContext } from '../../../Contexts/ThemeContext';
+import { colors } from '../../../Constants/Styling';
 
 const Button = (props) => {
+    const theme = useThemeContext();
     const getStyle = () => {
         switch (props.type) {
             case "primary":
-                return styles.backgroundPrimary
+                if (theme.isDarkTheme){
+                    return {backgroundColor: colors.infoDark}
+                }
+                else{
+                    return { backgroundColor: colors.infoLight}
+                }
                 break;
         
             default:
@@ -26,7 +34,6 @@ export default Button
 
 const styles = StyleSheet.create({
     button: {
-        borderWidth: 1,
         paddingVertical: 8,
         paddingHorizontal: 8*2,
         alignItems: 'center',

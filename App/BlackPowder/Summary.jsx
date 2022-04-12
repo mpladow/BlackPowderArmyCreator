@@ -18,7 +18,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import ListItemSpacer from "../Components/Atoms/ListItemSpacer";
 import Text from '../Components/Atoms/Text'
 import CustomModal from "../Components/Atoms/ModalCustom";
-import TextContainer from "../Components/Atoms/TextContainer";
+import Container from "../Components/Atoms/TextContainer";
+import Heading from "../Components/Atoms/Heading";
 
 
 const Summary = () => {
@@ -51,12 +52,13 @@ const Summary = () => {
   };
   return (
     <View>
-      <TextContainer>
-        <Text> A lst of every single Black Powder army built. Cna include number of different armies</Text>
-      </TextContainer>
+      <Container>
+        <Text>A list of every single Black Powder army built. Cna include number of different armies</Text>
+      </Container>
       <FlatList
         data={DATA}
-        ListHeaderComponent={() => (<View style={{borderBottomWidth: 1, borderColor: '#000', paddingHorizontal: 20, paddingVertical: 10}}><Text style={{fontWeight: 'bold'}}>All Armies</Text></View>)}
+        ListHeaderComponent={() => (<View style={{borderBottomWidth: 1, borderColor: '#000', paddingHorizontal: 20, paddingVertical: 10}}>
+          <Heading size={2}>All Armies</Heading></View>)}
         ItemSeparatorComponent={() => (<ListItemSpacer/>)}
         renderItem={(item) => <ListItem title={item.item.title} />}
         keyExtractor={(item) => item.id}
@@ -68,12 +70,8 @@ const Summary = () => {
           </Button>
         </ButtonContainer>
       </View>
-      <CustomModal toggleModalVisible={() => setShowArmyModal(!showArmyModal)} showModal={showArmyModal} > 
+      <CustomModal heading="Create Army" toggleModalVisible={() => setShowArmyModal(!showArmyModal)} showModal={showArmyModal} > 
       <KeyboardAwareScrollView>
-            <View style={styles.modalHeader}>
-                <Text>Create Army</Text>
-                <Pressable onPress={()=> setShowArmyModal(false)}><FontAwesome name="times" size={24} color="black" /></Pressable>
-            </View>
             <View style={styles.modalContent}>
               <Controller control={control}
               name="ArmyName"

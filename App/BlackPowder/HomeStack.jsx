@@ -14,12 +14,14 @@ const HomeStack = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: true,
+        headerShadowVisible: false,
+        headerTitleStyle: {fontFamily: 'NotoSans_700Bold', fontSize: 24},
         headerRight: () => (
           <ProfileButton onPress={() => nav.navigate("Settings")}/>
         ),
       }}
     >
-      <Stack.Screen name="Summary" component={Summary} />
+      <Stack.Screen name="Summary" options={{headerTitle: 'BP Companion'}}component={Summary} />
     </Stack.Navigator>
   );
 };

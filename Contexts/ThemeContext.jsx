@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { createContext, useContext, useState } from 'react'
-import { Colors } from '../Constants/Styling';
+import { colors } from '../Constants/Styling';
 
 const ThemeContext = createContext(undefined);
 
@@ -53,11 +53,11 @@ const ThemeProvider = ({ children }) => {
 const LightThemeCustom = {
   dark: false,
   colors: {
-    text: Colors.black,
-    primary: Colors.aquaMain,
-    background: Colors.offWhite1,
-    card: Colors.offWhite1,
-    border: Colors.aquaMain,
+    text: colors.black,
+    primary: colors.aquaMain,
+    background: colors.offWhite1,
+    card: colors.offWhite1,
+    border: colors.aquaMain,
     notification: '#0F7A6C'
   }
 
@@ -65,11 +65,11 @@ const LightThemeCustom = {
 const DarkThemeCustom = {
   dark: true,
   colors: {
-    text: Colors.offWhite1,
-    primary: Colors.aquaMain,
-    background: Colors.black,
-    card: Colors.black,
-    border: Colors.aquaMain,
+    text: colors.offWhite1,
+    primary: colors.aquaMain,
+    background: colors.black,
+    card: colors.black,
+    border: colors.aquaMain,
     notification: '#0F7A6C'
   }
 }

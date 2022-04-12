@@ -3,7 +3,7 @@ import {
   View,
   Pressable,
   Dimensions,
-  FlatList
+  FlatList,
 } from "react-native";
 import React, { useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -13,11 +13,13 @@ import CommandRef from "./CommandRef";
 import ReferenceListItem from "./Atoms/ReferenceListItem";
 import ListItemSpacer from "../Components/Atoms/ListItemSpacer";
 import { useArmyContext } from "../../Contexts/ArmyContext";
-import Text from '../Components/Atoms/Text';
-import { Colors } from "../../Constants/Styling";
-import { useTheme } from '@react-navigation/native';
+import Text from "../Components/Atoms/Text";
+import { colors } from "../../Constants/Styling";
+import { useTheme } from "@react-navigation/native";
 import { useThemeContext } from "../../Contexts/ThemeContext";
 import CustomModal from "../Components/Atoms/ModalCustom";
+import Heading from "../Components/Atoms/Heading";
+import { useReferenceContext } from "../../Contexts/ReferenceContext";
 
 const Reference = () => {
   const [focusedItem, setFocusedItem] = useState();
@@ -28,14 +30,15 @@ const Reference = () => {
     setShowModal(!showModal);
   };
   const theme = useTheme();
-  const currentTheme = useThemeContext()
+  const currentTheme = useThemeContext();
   const referenceItems = [
     { id: 1, name: "Command", onPress: (item) => onPressHandler(item) },
     { id: 2, name: "Movement", onPress: (item) => onPressHandler(item) },
     { id: 3, name: "Shooting", onPress: (item) => onPressHandler(item) },
     { id: 4, name: "Hand to Hand", onPress: (item) => onPressHandler(item) },
-
   ];
+
+  const referenceContext = useReferenceContext();
   const onCloseHandler = () => {
     setShowModal(false);
     setFocusedItem(undefined);
@@ -53,9 +56,6 @@ const Reference = () => {
   const renderStickyHeader = () => {
     return (
       <View style={{ padding: 20 }}>
-        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-          Quick Reference Sheet
-        </Text>
         <Text>
           Find quick references here. You can add more quick reference items
           viea the menu at the top right corner.
@@ -68,7 +68,7 @@ const Reference = () => {
       <View>
         <FlatList
           ListHeaderComponent={() => renderStickyHeader()}
-        // stickyHeaderIndices={[1]}
+          // stickyHeaderIndices={[1]}
           data={referenceItems}
           ItemSeparatorComponent={() => <ListItemSpacer />}
           renderItem={({ item }) => (
@@ -81,22 +81,21 @@ const Reference = () => {
         />
       </View>
 
-        <CustomModal toggleModalVisible={() => setShowModal(!showModal)} showModal={showModal} > 
+      <CustomModal
+      heading={focusedItem}
+        toggleModalVisible={() => setShowModal(!showModal)}
+        showModal={showModal}
+      >
         <KeyboardAwareScrollView>
-              <View style={styles.modalHeader}>
-                <Text>Create Army</Text>
-                <Pressable onPress={onCloseHandler}>
-                  <FontAwesome name="times" size={24} color="black" />
-                </Pressable>
-              </View>
-              <View style={styles.modalContent}>{renderContent()}</View>
-              <View style={styles.modalFooter}>
-                <Button type="primary" onPress={onCloseHandler}>
-                  Cancel
-                </Button>
-              </View>
-            </KeyboardAwareScrollView>
-        </CustomModal>
+
+          <View style={styles.modalContent}>{renderContent()}</View>
+          <View style={styles.modalFooter}>
+            <Button type="primary" onPress={onCloseHandler}>
+              Cancel
+            </Button>
+          </View>
+        </KeyboardAwareScrollView>
+      </CustomModal>
     </>
   );
 };
@@ -104,9 +103,9 @@ const Reference = () => {
 export default Reference;
 
 const styles = StyleSheet.create({
-//   listItem: {
-//     flex: 1,
-//   },
+  //   listItem: {
+  //     flex: 1,
+  //   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -114,9 +113,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   modalLight: {
-    backgroundColor: Colors.offWhite1,
+    backgroundColor: colors.offWhite1,
   },
-  modalDark: {backgroundColor: Colors.grey2},
+  modalDark: { backgroundColor: colors.grey2 },
 
   modalView: {
     borderRadius: 20,

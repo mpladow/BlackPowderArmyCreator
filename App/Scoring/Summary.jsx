@@ -1,10 +1,11 @@
 import { StyleSheet, View, Pressable } from "react-native";
 import React, { useState } from "react";
-import TextContainer from "../Components/Atoms/TextContainer";
+import Container from "../Components/Atoms/TextContainer";
 import Text from "../Components/Atoms/Text";
 import { commonStyles } from "../../Constants/Styling";
 import { AntDesign } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
+import Heading from "../Components/Atoms/Heading";
 
 const Summary = () => {
   const [turn, setTurn] = useState(1);
@@ -24,8 +25,8 @@ const Summary = () => {
   };
   return (
     <View>
-      <TextContainer>
-        <Text>Turn Tracker</Text>
+      <Container>
+        <Heading size={3}>Turn Tracker</Heading>
         <View style={styles.trackerContainer}>
             <Pressable onPress={decrementTurn}>
           <View style={styles.trackerButton}>
@@ -41,7 +42,7 @@ const Summary = () => {
                     </View>
             </Pressable>
         </View>
-      </TextContainer>
+      </Container>
     </View>
   );
 };

@@ -3,13 +3,13 @@ import React from 'react'
 import Text from '../Components/Atoms/Text';
 
 import { useThemeContext } from '../../Contexts/ThemeContext'
-import TextContainer from '../Components/Atoms/TextContainer';
+import Container from '../Components/Atoms/TextContainer';
 
 const Settings = () => {
 const themeContext = useThemeContext();
   return (
     <View>
-      <TextContainer>
+      <Container>
       <Text>Curent Theme: {themeContext.isDarkTheme? 'Dark' : 'Light'}</Text>
       <Switch
         trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -18,7 +18,7 @@ const themeContext = useThemeContext();
         onValueChange={themeContext.toggleDarkMode}
         value={themeContext.isDarkTheme}
       />
-      </TextContainer>
+      </Container>
      
     </View>
   )
