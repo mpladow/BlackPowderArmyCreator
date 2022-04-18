@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { FontAwesome } from "@expo/vector-icons";
 import Button from "../Components/Atoms/Button";
-import CommandRef from "./CommandRef";
+import ReferenceModal from "./ReferenceModal";
 import ReferenceListItem from "./Atoms/ReferenceListItem";
 import ListItemSpacer from "../Components/Atoms/ListItemSpacer";
 import { useArmyContext } from "../../Contexts/ArmyContext";
@@ -26,6 +26,7 @@ const Reference = () => {
   const [showModal, setShowModal] = useState(false);
   const onPressHandler = (item) => {
     // open modal
+    console.log(item, 'On Press ')
     setFocusedItem(item);
     setShowModal(!showModal);
   };
@@ -34,8 +35,11 @@ const Reference = () => {
   const referenceItems = [
     { id: 1, name: "Command", onPress: (item) => onPressHandler(item) },
     { id: 2, name: "Movement", onPress: (item) => onPressHandler(item) },
-    { id: 3, name: "Shooting", onPress: (item) => onPressHandler(item) },
-    { id: 4, name: "Hand to Hand", onPress: (item) => onPressHandler(item) },
+    { id: 3, name: "Hand-To-Hand Combat", onPress: (item) => onPressHandler(item) },
+    { id: 4, name: "Morale", onPress: (item) => onPressHandler(item) },
+    { id: 5, name: "Shooting", onPress: (item) => onPressHandler(item) },
+    { id: 5, name: "Size Modifiers", onPress: (item) => onPressHandler(item) },
+
   ];
 
   const referenceContext = useReferenceContext();
@@ -44,11 +48,14 @@ const Reference = () => {
     setFocusedItem(undefined);
   };
   const renderContent = () => {
+    return <ReferenceModal category={focusedItem} />;
     switch (focusedItem) {
       case "Command":
-        return <CommandRef />;
+        return <ReferenceModal category={focusedItem} />;
         break;
+case "Movement": {
 
+}
       default:
         break;
     }

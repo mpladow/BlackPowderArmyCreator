@@ -60,8 +60,8 @@ const LightThemeCustom = {
     border: colors.aquaMain,
     notification: '#0F7A6C'
   }
-
 }
+
 const DarkThemeCustom = {
   dark: true,
   colors: {

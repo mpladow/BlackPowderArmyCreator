@@ -15,45 +15,45 @@ const MainTabs = () => {
 
   return (
     <Tab.Navigator
-      screenOptions={{
-        tabBarLabelStyle: { fontFamily: "Poppins_400Regular", },
-        tabBarInactiveTintColor: theme.isDarkTheme
-          ? theme.DarkThemeCustom.Text
-          : theme.DarkThemeCustom.Text,
-        tabBarAccessibilityLabel: theme.isDarkTheme
-          ? theme.DarkThemeCustom.primary
-          : theme.DarkThemeCustom.primary,
-        headerShown: false,
-        headerShadowVisible: false,
-      }}
+      // screenOptions={{
+      //   tabBarLabelStyle: { fontFamily: "Poppins_400Regular" },
+      //   tabBarInactiveTintColor: theme.isDarkTheme
+      //     ? theme.DarkThemeCustom.Text
+      //     : theme.DarkThemeCustom.Text,
+      //   tabBarAccessibilityLabel: theme.isDarkTheme
+      //     ? theme.DarkThemeCustom.primary
+      //     : theme.DarkThemeCustom.primary,
+      //   headerShown: false,
+      //   headerShadowVisible: false,
+      // }}
     >
       <Tab.Screen
-        options={{
-          headerShadowVisible: false,
-          headerTitleStyle: {fontFamily: 'NotoSans_700Bold', fontSize: 24},
-          tabBarIcon: ({ color, size }) => (
-            <Entypo name="list" size={size} color={color} />
-          ),
-        }}
+        // options={{
+        //   headerShadowVisible: false,
+        //   headerTitleStyle: {fontFamily: 'NotoSans_700Bold', fontSize: 24},
+        //   tabBarIcon: ({ color, size }) => (
+        //     <Entypo name="list" size={size} color={color} />
+        //   ),
+        // }}
         
         name="Home"
         component={HomeStack}
       />
       <Tab.Screen
-        options={{
-          headerShadowVisible: false,
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="scoreboard-outline"
-              size={24}
-              color={color}
-            />
-          ),
-        }}
+        // options={{
+        //   headerShadowVisible: false,
+        //   tabBarIcon: ({ color, size }) => (
+        //     <MaterialCommunityIcons
+        //       name="scoreboard-outline"
+        //       size={24}
+        //       color={color}
+        //     />
+        //   ),
+        // }}
         name="Tracker"
         component={ScoringStack}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         options={{
           headerShadowVisible: false,
           headerTitle: 'Quick Reference Sheet',
@@ -65,7 +65,7 @@ const MainTabs = () => {
         }}
         name="Reference"
         component={Reference}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };
