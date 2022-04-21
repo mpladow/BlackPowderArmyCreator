@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { useThemeContext } from '../../../Contexts/ThemeContext'
+import { useThemeContext } from '../../Contexts/ThemeContext'
 import { useTheme } from '@react-navigation/native';
 
 const ListItemSpacer = () => {

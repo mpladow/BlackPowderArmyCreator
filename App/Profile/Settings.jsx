@@ -2,7 +2,7 @@ import { StyleSheet, Switch, View } from 'react-native'
 import React from 'react'
 import Text from '../Components/Atoms/Text';
 
-import { useThemeContext } from '../../Contexts/ThemeContext'
+import { useThemeContext } from '../Contexts/ThemeContext'
 import Container from '../Components/Atoms/TextContainer';
 
 const Settings = () => {

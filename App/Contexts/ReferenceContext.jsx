@@ -464,7 +464,7 @@ const ReferenceProvider = ({ children }) => {
 export const useReferenceContext = () => {
   const context = useContext(ReferenceContext);
   if (!context) {
-    throw new Error("useTheme can only be used wtihin an ArmyProvider");
+    throw new Error("useReference can only be used wtihin an ReferenceProvider");
   }
   return context;
 };

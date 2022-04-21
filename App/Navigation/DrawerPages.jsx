@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Settings from '../App/Profile/Settings';
+import Settings from '../Profile/Settings';
 import MainTabs from './MainTabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 

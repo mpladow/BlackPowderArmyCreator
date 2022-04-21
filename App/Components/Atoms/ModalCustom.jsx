@@ -1,8 +1,8 @@
-import { Modal, StyleSheet, Text, View, Pressable } from "react-native";
+import { Modal, StyleSheet, Text, View, Pressable, TouchableOpacity } from "react-native";
 import React from "react";
 import { useTheme } from "@react-navigation/native";
-import { useThemeContext } from "../../../Contexts/ThemeContext";
-import { colors } from "../../../Constants/Styling";
+import { useThemeContext } from "../../Contexts/ThemeContext";
+import { colors } from "../../Constants/Styling";
 import Heading from "./Heading";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -10,31 +10,54 @@ const CustomModal = (props) => {
   const theme = useTheme();
   const currentTheme = useThemeContext();
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={props.showModal}
-      onRequestClose={() => {
-        props.toggleModalVisible();
-      }}
-    >
-      <View style={styles.centeredView}>
-        <View
-          style={[
-            currentTheme.isDarkTheme ? styles.modalDark : styles.modalLight,
-            styles.modalView,
-          ]}
-        >
-          <View style={styles.modalHeader}>
-            <Heading size={2}>{props.heading}</Heading>
-            <Pressable onPress={props.toggleModalVisible}>
-              <FontAwesome name="times" size={20} color={theme.colors.text} />
-            </Pressable>
-          </View>
-          {props.children}
-        </View>
-      </View>
-    </Modal>
+		<Modal
+			animationType='fade'
+			transparent={true}
+			visible={props.showModal}
+			onRequestClose={() => {
+				props.toggleModalVisible();
+			}}
+		>
+			<TouchableOpacity
+				style={styles.centeredView}
+				onPress={props.toggleModalVisible}
+			>
+				<TouchableOpacity
+					onPress={() =>
+						console.log('do nothing')
+					}
+					activeOpacity={1}
+					style={[
+						currentTheme.isDarkTheme
+							? styles.modalDark
+							: styles.modalLight,
+						styles.modalView,
+					]}
+				>
+					<View style={styles.modalHeader}>
+						<Heading size={2}>
+							{props.heading}
+						</Heading>
+						<Pressable
+							onPress={
+								props.toggleModalVisible
+							}
+						>
+							<FontAwesome
+								name='times'
+								size={20}
+								color={
+									theme
+										.colors
+										.text
+								}
+							/>
+						</Pressable>
+					</View>
+					{props.children}
+				</TouchableOpacity>
+			</TouchableOpacity>
+		</Modal>
   );
 };
 

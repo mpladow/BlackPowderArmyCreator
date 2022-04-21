@@ -9,6 +9,7 @@ const ThemeProvider = ({ children }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(true);
 
   const toggleDarkMode = () => {
+	  console.log(isDarkTheme, 'DARK THEME')
     setIsDarkTheme(!isDarkTheme);
   }
   return (
@@ -81,7 +82,7 @@ const DarkThemeCustom = {
 export const useThemeContext = () => {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error("useTheme can only be used wtihin an ArmyProvider")
+    throw new Error("useTheme can only be used wtihin an Theme provider")
   }
     return context;
 }
