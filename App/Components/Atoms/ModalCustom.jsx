@@ -2,7 +2,7 @@ import { Modal, StyleSheet, Text, View, Pressable, TouchableOpacity } from "reac
 import React from "react";
 import { useTheme } from "@react-navigation/native";
 import { useThemeContext } from "../../Contexts/ThemeContext";
-import { colors } from "../../Constants/Styling";
+import { colors } from "../../Themes/Styling";
 import Heading from "./Heading";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -12,13 +12,13 @@ const CustomModal = (props) => {
   return (
 		<Modal
 			animationType='fade'
-			transparent={true}
+			transparent={false}
 			visible={props.showModal}
 			onRequestClose={() => {
 				props.toggleModalVisible();
 			}}
 		>
-			<TouchableOpacity
+			<Pressable
 				style={styles.centeredView}
 				onPress={props.toggleModalVisible}
 			>
@@ -56,7 +56,7 @@ const CustomModal = (props) => {
 					</View>
 					{props.children}
 				</TouchableOpacity>
-			</TouchableOpacity>
+			</Pressable>
 		</Modal>
   );
 };

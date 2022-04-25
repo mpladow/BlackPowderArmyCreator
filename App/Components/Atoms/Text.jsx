@@ -20,10 +20,23 @@ const Text = (props) => {
   
     const theme = useTheme();
   return (
-    <>
-      <NativeText {...props} style={[{color: theme.colors.text, fontFamily: 'Poppins_400Regular'}, props.style]}>{props.children}</NativeText>
-    </>
-  )
+		<>
+			<NativeText
+				{...props}
+				style={[
+					{
+						color: theme.colors.text,
+						fontFamily: props.bold
+							? 'Poppins_600SemiBold'
+							: 'Poppins_400Regular',
+					},
+					props.style,
+				]}
+			>
+				{props.children}
+			</NativeText>
+		</>
+  );
 }
 
 export default Text

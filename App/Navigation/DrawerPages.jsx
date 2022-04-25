@@ -10,7 +10,7 @@ const DrawerPages = () => {
   return (
     <Drawer.Navigator initialRouteName="MainTabs">
         <Drawer.Screen name="Settings" component={Settings} />
-        <Drawer.Screen name="MainTabs" component={MainTabs} />
+        {/* <Drawer.Screen name="MainTabs" component={MainTabs} /> */}
       </Drawer.Navigator>
   )
 }

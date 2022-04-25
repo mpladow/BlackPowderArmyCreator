@@ -8,7 +8,7 @@ const ScoringStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerTitleStyle: { fontFamily: "NotoSans_700Bold", fontSize: 24 },
+        headerTitleStyle: { fontFamily: "NotoSans_700Bold", fontSize: 18 },
         headerShadowVisible: false,
       }}
     >

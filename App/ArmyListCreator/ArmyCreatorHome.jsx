@@ -6,12 +6,11 @@ import {
 	Alert,
 	Pressable,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ListItem from '../Components/Atoms/ListItem';
 import Button from '../Components/Atoms/Button';
 import ButtonContainer from '../Components/Atoms/ButtonContainer';
 import { FontAwesome } from '@expo/vector-icons';
-import Input from '../Components/Atoms/Input';
 import { Controller, useForm } from 'react-hook-form';
 import { onChange } from 'react-native-reanimated';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -20,34 +19,37 @@ import Text from '../Components/Atoms/Text';
 import CustomModal from '../Components/Atoms/ModalCustom';
 import Container from '../Components/Atoms/TextContainer';
 import Heading from '../Components/Atoms/Heading';
+import { useNavigation } from '@react-navigation/native';
+import InputField from '../Components/Atoms/InputField';
+import { useArmyContext } from '../Contexts/ArmyContext';
 
-const Summary = () => {
+const ArmyCreatorHome = () => {
 	const [showArmyModal, setShowArmyModal] = useState(false);
+	const [armyList, setArmyList] = useState([]);
 	const {
 		control,
 		handleSubmit,
 		formState: { errors, isValid },
 	} = useForm({ mode: 'onChange', defaultValues: { ArmyName: '' } });
 
-	const DATA = [
-		{
-			id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-			title: 'First Item',
-		},
-		{
-			id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-			title: 'Second Item',
-		},
-		{
-			id: '58694a0f-3da1-471f-bd96-145571e29d72',
-			title: 'Third Item',
-		},
-	];
+	const nav = useNavigation();
+	const armyContext = useArmyContext();
+
+	const populateArmyList = () => {
+		let list = armyContext.armies.map((item) => ({
+			id: item.Id,
+			armyName: item.ArmyName,
+			armyNotes: item.ArmyNotes,
+		}));
+		setArmyList(list);
+	};
+	useEffect(() => {
+		// populateArmyList();
+	}, []);
 
 	const addArmyHandler = () => {
 		// open up a modal to add a new army
-		console.log('Add Army');
-		setShowArmyModal(!showArmyModal);
+		nav.navigate('EditArmy', { id: null });
 	};
 	return (
 		<View>
@@ -59,7 +61,7 @@ const Summary = () => {
 				</Text>
 			</Container>
 			<FlatList
-				data={DATA}
+				data={armyList}
 				ListHeaderComponent={() => (
 					<View
 						style={{
@@ -78,7 +80,12 @@ const Summary = () => {
 					<ListItemSpacer />
 				)}
 				renderItem={(item) => (
-					<ListItem title={item.item.title} />
+					<ListItem
+						title={item.item.armyList}
+						description={
+							item.item.armyNotes
+						}
+					/>
 				)}
 				keyExtractor={(item) => item.id}
 			/>
@@ -111,7 +118,7 @@ const Summary = () => {
 									onBlur,
 								},
 							}) => (
-								<Input
+								<InputField
 									label='Army Name'
 									placeholder='i.e., French I Corps'
 									value={
@@ -146,7 +153,7 @@ const Summary = () => {
 	);
 };
 
-export default Summary;
+export default ArmyCreatorHome;
 
 const styles = StyleSheet.create({
 	centeredView: {

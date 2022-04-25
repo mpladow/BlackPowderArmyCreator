@@ -1,11 +1,12 @@
 import 'react-native-gesture-handler';
 import { StyleSheet, View, Pressable } from 'react-native';
 import React from 'react';
-import Summary from './Summary';
+import ArmyCreatorHome from './ArmyCreatorHome';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import Text from '../Components/Atoms/Text';
 import ProfileButton from '../Profile/ProfileButton';
+import EditArmy from './ListCreator/EditArmy';
 
 const HomeStack = () => {
 	const Stack = createNativeStackNavigator();
@@ -18,7 +19,7 @@ const HomeStack = () => {
 				headerShadowVisible: false,
 				headerTitleStyle: {
 					fontFamily: 'NotoSans_700Bold',
-					fontSize: 24,
+					fontSize: 18,
 				},
 				headerRight: () => (
 					<ProfileButton
@@ -32,7 +33,12 @@ const HomeStack = () => {
 			<Stack.Screen
 				name='Summary'
 				options={{ headerTitle: 'BP Companion' }}
-				component={Summary}
+				component={ArmyCreatorHome}
+			/>
+			<Stack.Screen
+				name='EditArmy'
+				options={{ headerTitle: 'Create Army' }}
+				component={EditArmy}
 			/>
 		</Stack.Navigator>
 	);

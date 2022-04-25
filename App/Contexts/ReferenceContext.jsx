@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { colors } from "../Constants/Styling";
+import { colors } from "../Themes/Styling";
 
 const ReferenceContext = createContext(undefined);
 

@@ -17,7 +17,7 @@ const CombatAssistantStack = () => {
 				headerShadowVisible: false,
 				headerTitleStyle: {
 					fontFamily: 'NotoSans_700Bold',
-					fontSize: 24,
+					fontSize: 18,
 				},
 				headerRight: () => (
 					<ProfileButton

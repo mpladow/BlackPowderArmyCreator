@@ -14,7 +14,7 @@ import ReferenceListItem from './Atoms/ReferenceListItem';
 import ListItemSpacer from '../Components/Atoms/ListItemSpacer';
 import { useArmyContext } from '../Contexts/ArmyContext';
 import Text from '../Components/Atoms/Text';
-import { colors } from '../Constants/Styling';
+import { colors } from '../Themes/Styling';
 import { useTheme } from '@react-navigation/native';
 import { useThemeContext } from '../Contexts/ThemeContext';
 import CustomModal from '../Components/Atoms/ModalCustom';
@@ -57,7 +57,7 @@ const Reference = () => {
 			onPress: (item) => onPressHandler(item),
 		},
 		{
-			id: 5,
+			id: 6,
 			name: 'Size Modifiers',
 			onPress: (item) => onPressHandler(item),
 		},
@@ -85,13 +85,18 @@ const Reference = () => {
 		);
 	};
 	return (
-		<>
+		<View>
+			<View style={{ padding: 20 }}>
+				<Text>
+					Find quick references here. You can add
+					more quick reference items viea the menu
+					at the top right corner.
+				</Text>
+			</View>
 			<View>
 				<FlatList
-					ListHeaderComponent={() =>
-						renderStickyHeader()
-					}
 					// stickyHeaderIndices={[1]}
+					keyExtractor={(item) => item.id.toString()}
 					data={referenceItems}
 					ItemSeparatorComponent={() => (
 						<ListItemSpacer />
@@ -120,7 +125,7 @@ const Reference = () => {
 					<View style={styles.modalFooter}></View>
 				</KeyboardAwareScrollView>
 			</CustomModal>
-		</>
+		</View>
 	);
 };
 

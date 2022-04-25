@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { commonStyles } from '../../Constants/Styling'
+import { commonStyles } from '../../Themes/Styling'
 
 const Container = (props) => {
   return (

@@ -2,7 +2,7 @@ import { StyleSheet, View, Pressable } from "react-native";
 import React, { useState } from "react";
 import Container from "../Components/Atoms/TextContainer";
 import Text from "../Components/Atoms/Text";
-import { commonStyles } from "../Constants/Styling";
+import { commonStyles } from "../Themes/Styling";
 import { AntDesign } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import Heading from "../Components/Atoms/Heading";

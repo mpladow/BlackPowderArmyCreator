@@ -10,7 +10,7 @@ import {
 	NotoSans_700Bold,
 	NotoSans_700Bold_Italic,
 } from '@expo-google-fonts/noto-sans';
-import { Poppins_400Regular } from '@expo-google-fonts/poppins';
+import { Poppins_400Regular, Poppins_600SemiBold } from '@expo-google-fonts/poppins';
 import AppLoading from 'expo-app-loading';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -22,6 +22,7 @@ import {
 export default function App() {
 	let [fontsLoaded] = useFonts({
 		Poppins_400Regular,
+		Poppins_600SemiBold,
 		NotoSans_400Regular,
 		NotoSans_700Bold,
 	});
