@@ -17,15 +17,17 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import ListItemSpacer from '../Components/Atoms/ListItemSpacer';
 import Text from '../Components/Atoms/Text';
 import CustomModal from '../Components/Atoms/ModalCustom';
-import Container from '../Components/Atoms/TextContainer';
+import Container from '../Components/Atoms/Container';
 import Heading from '../Components/Atoms/Heading';
 import { useNavigation } from '@react-navigation/native';
 import InputField from '../Components/Atoms/InputField';
 import { useArmyContext } from '../Contexts/ArmyContext';
+import { useTheme } from '@react-navigation/native';
 
 const ArmyCreatorHome = () => {
 	const [showArmyModal, setShowArmyModal] = useState(false);
 	const [armyList, setArmyList] = useState([]);
+
 	const {
 		control,
 		handleSubmit,
@@ -51,17 +53,20 @@ const ArmyCreatorHome = () => {
 		// open up a modal to add a new army
 		nav.navigate('EditArmy', { id: null });
 	};
+	const onArmyListItemPressHandler = (id) => {
+		nav.navigate('ArmyDetails', {Id: id})
+	}
 	return (
 		<View>
 			<Container>
 				<Text>
 					A list of every single Black Powder army
-					built. Cna include number of different
+					built. Can include number of different
 					armies
 				</Text>
 			</Container>
 			<FlatList
-				data={armyList}
+				data={armyContext.armies}
 				ListHeaderComponent={() => (
 					<View
 						style={{
@@ -81,10 +86,12 @@ const ArmyCreatorHome = () => {
 				)}
 				renderItem={(item) => (
 					<ListItem
-						title={item.item.armyList}
+					id={item.item.Id}
+						title={item.item.ArmyName}
 						description={
-							item.item.armyNotes
+							item.item.ArmyNotes
 						}
+						onPress={() => onArmyListItemPressHandler(item.item.Id)}
 					/>
 				)}
 				keyExtractor={(item) => item.id}

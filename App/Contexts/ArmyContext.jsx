@@ -3,36 +3,61 @@ import { StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ArmyContext = createContext(undefined);
-
 const ArmyProvider = ({ children }) => {
 	// Manage theme state
 	const [armies, setArmies] = useState([]);
 	const getArmies = async () => {
 		// check local storage for saved armies
-			  const _armies = await AsyncStorage.getItem('USER_ARMIES');
-			  if (_armies) {
-				  const armiesSerialised = JSON.parse(_armies);
-				  setArmies(armiesSerialised);
-			  }
- 
-	}
+		const _armies = await AsyncStorage.getItem('USER_ARMIES');
+		console.log(armies, 'ARMIES FROM USEEFFECT');
+		if (_armies) {
+			const armiesSerialised = JSON.parse(_armies);
+			setArmies(armiesSerialised);
+		}
+	};
 
-	
 	const addArmy = (newArmy) => {
+		console.log('Adding new army...');
 		setArmies([...armies, newArmy]);
 	};
-	const editArmy = (armyDetails) => {
+	const editArmy = (army) => {
+		console.log('EDITING ARMY');
 		const itemIndex = armies.findIndex(
-			(item) => item.Id === armyDetails.Id
+			(item) => item.Id === army.Id
 		);
 		const updatedArray = [...armies];
 
-		updatedArray[itemIndex].Name = armyDetails.Name;
+		updatedArray[itemIndex].ArmyName = army.ArmyName;
+		updatedArray[itemIndex].ArmyNotes = army.ArmyNotes;
+		updatedArray[itemIndex].EraTemplate = army.EraTemplate;
+
 		setArmies(updatedArray);
 	};
+	const getArmyById = (id) => {
+		return armies.find((x) => x.Id == id);
+	};
+	const deleteArmy = (id) => {
+		setArmies(armies.filter((i) => i.Id !== id));
+	};
+	useEffect(() => {
+		getArmies();
+	}, []);
+	useEffect(() => {
+		let armiesString = JSON.stringify(armies);
+		AsyncStorage.setItem('USER_ARMIES', armiesString);
+		console.log(armiesString, 'update armies');
+	}, [armies]);
 
 	return (
-		<ArmyContext.Provider value={{ armies, addArmy, editArmy }}>
+		<ArmyContext.Provider
+			value={{
+				armies,
+				addArmy,
+				editArmy,
+				deleteArmy,
+				getArmyById,
+			}}
+		>
 			{children}
 		</ArmyContext.Provider>
 	);

@@ -12,7 +12,7 @@ const CustomModal = (props) => {
   return (
 		<Modal
 			animationType='fade'
-			transparent={false}
+			transparent={true}
 			visible={props.showModal}
 			onRequestClose={() => {
 				props.toggleModalVisible();

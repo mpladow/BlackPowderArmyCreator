@@ -1,6 +1,6 @@
 import { StyleSheet, View, Pressable } from "react-native";
 import React, { useState } from "react";
-import Container from "../Components/Atoms/TextContainer";
+import Container from "../Components/Atoms/Container";
 import Text from "../Components/Atoms/Text";
 import { commonStyles } from "../Themes/Styling";
 import { AntDesign } from "@expo/vector-icons";

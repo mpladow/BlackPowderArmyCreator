@@ -23,23 +23,33 @@ const Button = (props) => {
 					};
 				}
 				break;
+			case 'danger':
+				if (theme.dark) {
+					return {
+						backgroundColor:
+							colors.dangerDark,
+					};
+				} else {
+					return {
+						backgroundColor:
+							colors.dangerLight,
+					};
+				}
+				break;
 			case 'cancel':
-					if (theme.dark) {
-						return {
-							backgroundColor:
-								'transparent',
-								borderWidth: 1,
-								borderColor: colors.offWhite1
-						};
-					} else {
-						return {
-							backgroundColor:
-								'transparent',
-							borderWidth: 1,
-							borderColor:
-								colors.black,
-						};
-					}
+				if (theme.dark) {
+					return {
+						backgroundColor: 'transparent',
+						borderWidth: 1,
+						borderColor: colors.offWhite1,
+					};
+				} else {
+					return {
+						backgroundColor: 'transparent',
+						borderWidth: 1,
+						borderColor: colors.black,
+					};
+				}
 			default:
 				break;
 		}
@@ -47,6 +57,17 @@ const Button = (props) => {
 	const getTextStyle = () => {
 		switch (props.type) {
 			case 'primary':
+				if (theme.dark) {
+					return {
+						color: colors.offWhite1,
+					};
+				} else {
+					return {
+						color: colors.offWhite1,
+					};
+				}
+				break;
+			case 'danger':
 				if (theme.dark) {
 					return {
 						color: colors.offWhite1,

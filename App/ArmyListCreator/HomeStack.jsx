@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import Text from '../Components/Atoms/Text';
 import ProfileButton from '../Profile/ProfileButton';
 import EditArmy from './ListCreator/EditArmy';
+import ArmyDetails from './ListCreator/ArmyDetails';
 
 const HomeStack = () => {
 	const Stack = createNativeStackNavigator();
@@ -37,8 +38,21 @@ const HomeStack = () => {
 			/>
 			<Stack.Screen
 				name='EditArmy'
-				options={{ headerTitle: 'Create Army' }}
+				options={{ headerTitle: 'Create Army', 
+				presentation: 'modal' }}
 				component={EditArmy}
+			/>
+			<Stack.Screen
+				name='ArmyDetails'
+				options={{
+					headerTitle: 'Army Details',
+					// headerRight: () => (
+					// 	<Pressable>
+					// 		<Text>Edit</Text>
+					// 	</Pressable>
+					// ),
+				}}
+				component={ArmyDetails}
 			/>
 		</Stack.Navigator>
 	);

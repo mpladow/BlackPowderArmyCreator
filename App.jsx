@@ -25,6 +25,7 @@ export default function App() {
 		Poppins_600SemiBold,
 		NotoSans_400Regular,
 		NotoSans_700Bold,
+		NotoSans_400Regular_Italic,
 	});
 	if (!fontsLoaded) {
 		return <AppLoading />;

@@ -3,7 +3,7 @@ import React from 'react'
 import Text from '../Components/Atoms/Text';
 
 import { useThemeContext } from '../Contexts/ThemeContext'
-import Container from '../Components/Atoms/TextContainer';
+import Container from '../Components/Atoms/Container';
 
 const Settings = () => {
 const themeContext = useThemeContext();

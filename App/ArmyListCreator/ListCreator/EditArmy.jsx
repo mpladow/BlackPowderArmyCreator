@@ -7,34 +7,63 @@ import Card from '../../Components/Atoms/Card';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PickerCustom from '../../Components/Atoms/PickerCustom';
 import Button from '../../Components/Atoms/Button';
+import uuid from 'react-native-uuid';
+import { useArmyContext } from '../../Contexts/ArmyContext';
 
 const EditArmy = (props) => {
 	const [buttonLabel, setButtonLabel] = useState('Create Army');
 	const [buttonDisabled, setButtonDisabled] = useState(true);
 	const nav = useNavigation();
+	const armyContext = useArmyContext();
 	const {
 		control,
 		handleSubmit,
-		formState: { errors, isDirty },
+		setValue,
+		getValues,
+		formState: { errors, isDirty, isValid },
 	} = useForm({
 		defaultValues: {
 			Id: 0,
 			ArmyName: '',
 			ArmyNotes: '',
-			EraTemplate: '',
+			EraTemplate: 'napoleonics',
 		},
 	});
+
+	useEffect(() => {
+		console.log('getting route');
+		if (props.route.params.Id) {
+			let id = props.route.params.Id;
+			setValue('Id', id);
+			let army = armyContext.getArmyById(id);
+			setValue('ArmyName', army.ArmyName);
+			setValue('ArmyNotes', army.ArmyNotes);
+			setValue('EraTemplate', army.EraTemplate);
+			setButtonLabel('Save Changes');
+		}
+	}, []);
 
 	const onCancelPress = () => {
 		// prompt cancel if form is dirty
 		nav.goBack();
-	}
+	};
 	const onSubmitHandler = (data) => {
-		console.log(data, 'DATA')
-	}
+		console.log(data, 'DATA');
+
+		if (data.Id === 0) {
+			//add
+			data.Id = uuid.v4();
+			// save army
+			armyContext.addArmy(data);
+		} else {
+			//edit
+			armyContext.editArmy(data);
+		}
+		nav.navigate('ArmyDetails', { Id: data.Id });
+	};
 	const onErrorHandler = (error) => {
-		console.log(error, 'ERROR')
-	}
+		console.log(error, 'ERROR');
+	};
 
 	return (
 		<KeyboardAwareScrollView>
@@ -66,6 +95,7 @@ const EditArmy = (props) => {
 						)}
 						name={'ArmyName'}
 						control={control}
+						rules={{ required: true }}
 					/>
 					<Controller
 						render={({
@@ -81,13 +111,17 @@ const EditArmy = (props) => {
 								placeholder={
 									'e.g., French 1812, British Waterloo'
 								}
-								onChangeText={
-									onChange
-								}
+								onChangeText={(val) => {
+									onChange(val);
+									console.log(
+										getValues(), 'values'
+									);
+								}}
 							/>
 						)}
 						name={'ArmyNotes'}
 						control={control}
+						rules={{ required: true }}
 					/>
 				</Card>
 			</View>
@@ -136,18 +170,15 @@ const EditArmy = (props) => {
 					<View style={{ marginTop: 16 }}>
 						<Button
 							type='primary'
-							disabled={
-								isDirty
-									? false
-									: true
-							}
-							onPress={
-								handleSubmit(
-									onSubmitHandler,
-									onErrorHandler
-								)
-
-							}
+							// disabled={
+							// 	isDirty
+							// 		? false
+							// 		: true
+							// }
+							onPress={handleSubmit(
+								onSubmitHandler,
+								onErrorHandler
+							)}
 						>
 							{buttonLabel}
 						</Button>

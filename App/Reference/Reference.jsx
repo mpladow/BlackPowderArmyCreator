@@ -93,7 +93,6 @@ const Reference = () => {
 					at the top right corner.
 				</Text>
 			</View>
-			<View>
 				<FlatList
 					// stickyHeaderIndices={[1]}
 					keyExtractor={(item) => item.id.toString()}
@@ -108,8 +107,8 @@ const Reference = () => {
 							icon={null}
 						/>
 					)}
+					ListFooterComponent={() => <View style={{marginVertical: 100}}></View>}
 				/>
-			</View>
 
 			<CustomModal
 				heading={focusedItem}

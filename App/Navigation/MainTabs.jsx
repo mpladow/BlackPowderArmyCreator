@@ -67,7 +67,7 @@ const MainTabs = () => {
 				headerShadowVisible: false,
 				tabBarStyle: {
 					position: 'absolute',
-					bottom: 25,
+					bottom: 20,
 					left: 20,
 					right: 20,
 					elevation: 0,
@@ -75,7 +75,7 @@ const MainTabs = () => {
 						? colors.grey1
 						: colors.lightGrey1,
 					borderRadius: 15,
-					height: 60,
+					height: 50,
 					...styles.shadow,
 				},
 			}}
@@ -112,7 +112,7 @@ const MainTabs = () => {
 				name='Tracker'
 				component={ScoringStack}
 			/>
-			<Tab.Screen
+			{/* <Tab.Screen
 				options={{
 					headerShadowVisible: false,
 					headerTitle: 'Quick Reference Sheet',
@@ -137,7 +137,7 @@ const MainTabs = () => {
 				}}
 				name='Reference'
 				component={Reference}
-			/>
+			/> */}
 
 			<Tab.Screen
 				options={{
@@ -156,7 +156,7 @@ const MainTabs = () => {
 						/>
 					),
 				}}
-				name='EditArmy'
+				name='Reference'
 				component={Reference}
 			/>
 			<Tab.Screen
