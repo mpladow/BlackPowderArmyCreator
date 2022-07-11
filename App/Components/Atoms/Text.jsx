@@ -21,9 +21,9 @@ const Text = (props) => {
 				{...props}
 				style={[
 					getFontFamily(),
-					{
-						color: theme.colors.text,
-					},
+					
+						{color: theme.colors.text},
+					,
 					props.style,
 				]}
 			>

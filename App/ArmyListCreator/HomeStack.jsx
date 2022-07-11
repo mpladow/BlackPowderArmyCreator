@@ -8,6 +8,7 @@ import Text from '../Components/Atoms/Text';
 import ProfileButton from '../Profile/ProfileButton';
 import EditArmy from './ListCreator/EditArmy';
 import ArmyDetails from './ListCreator/ArmyDetails';
+import EditDivision from './ListCreator/EditDivision';
 
 const HomeStack = () => {
 	const Stack = createNativeStackNavigator();
@@ -38,9 +39,19 @@ const HomeStack = () => {
 			/>
 			<Stack.Screen
 				name='EditArmy'
-				options={{ headerTitle: 'Create Army', 
-				presentation: 'modal' }}
+				options={{
+					headerTitle: 'Create Army',
+					presentation: 'modal',
+				}}
 				component={EditArmy}
+			/>
+			<Stack.Screen
+				name='EditDivision'
+				options={{
+					headerTitle: 'Edit Division',
+					presentation: 'modal',
+				}}
+				component={EditDivision}
 			/>
 			<Stack.Screen
 				name='ArmyDetails'

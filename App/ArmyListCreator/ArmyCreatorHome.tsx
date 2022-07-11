@@ -5,6 +5,7 @@ import {
 	Modal,
 	Alert,
 	Pressable,
+	ListRenderItemInfo,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import ListItem from '../Components/Atoms/ListItem';
@@ -21,12 +22,12 @@ import Container from '../Components/Atoms/Container';
 import Heading from '../Components/Atoms/Heading';
 import { useNavigation } from '@react-navigation/native';
 import InputField from '../Components/Atoms/InputField';
-import { useArmyContext } from '../Contexts/ArmyContext';
+import { useArmyContext } from '../Contexts/ArmyListCreator/ArmyContext';
 import { useTheme } from '@react-navigation/native';
+import { Army } from '../Models/ArmyCreator';
 
 const ArmyCreatorHome = () => {
 	const [showArmyModal, setShowArmyModal] = useState(false);
-	const [armyList, setArmyList] = useState([]);
 
 	const {
 		control,
@@ -37,74 +38,67 @@ const ArmyCreatorHome = () => {
 	const nav = useNavigation();
 	const armyContext = useArmyContext();
 
-	const populateArmyList = () => {
-		let list = armyContext.armies.map((item) => ({
-			id: item.Id,
-			armyName: item.ArmyName,
-			armyNotes: item.ArmyNotes,
-		}));
-		setArmyList(list);
-	};
-	useEffect(() => {
-		// populateArmyList();
-	}, []);
-
 	const addArmyHandler = () => {
 		// open up a modal to add a new army
 		nav.navigate('EditArmy', { id: null });
 	};
 	const onArmyListItemPressHandler = (id) => {
-		nav.navigate('ArmyDetails', {Id: id})
-	}
+		armyContext.focus(id);
+		nav.navigate('ArmyDetails');
+	};
 	return (
-		<View>
-			<Container>
-				<Text>
-					A list of every single Black Powder army
-					built. Can include number of different
-					armies
-				</Text>
-			</Container>
-			<FlatList
-				data={armyContext.armies}
-				ListHeaderComponent={() => (
-					<View
-						style={{
-							borderBottomWidth: 1,
-							borderColor: '#000',
-							paddingHorizontal: 20,
-							paddingVertical: 10,
-						}}
-					>
-						<Heading size={2}>
-							All Armies
-						</Heading>
-					</View>
-				)}
-				ItemSeparatorComponent={() => (
-					<ListItemSpacer />
-				)}
-				renderItem={(item) => (
-					<ListItem
-					id={item.item.Id}
-						title={item.item.ArmyName}
-						description={
-							item.item.ArmyNotes
-						}
-						onPress={() => onArmyListItemPressHandler(item.item.Id)}
-					/>
-				)}
-				keyExtractor={(item) => item.id}
-			/>
-			<View>
-				<ButtonContainer>
-					<Button
-						type='primary'
-						onPress={addArmyHandler}
-					>
-						Add Army
-					</Button>
-				</ButtonContainer>
+		<>
+			<View style={{flex: 4, marginBottom: 100}}>
+				<FlatList
+					data={armyContext.armies}
+					ListHeaderComponent={() => (
+						<View
+							style={{
+								borderBottomWidth: 1,
+								borderColor:
+									'#000',
+								paddingHorizontal: 20,
+								paddingVertical: 10,
+							}}
+						>
+							<Heading size={2}>
+								All Armies
+							</Heading>
+						</View>
+					)}
+					ItemSeparatorComponent={() => (
+						<ListItemSpacer />
+					)}
+					renderItem={({
+						item,
+					}: ListRenderItemInfo<Army>) => (
+						<ListItem
+							id={item.ArmyId}
+							title={item.ArmyName}
+							description={
+								item.ArmyNotes
+							}
+							onPress={() =>
+								onArmyListItemPressHandler(
+									item.ArmyId
+								)
+							}
+						/>
+					)}
+					keyExtractor={(item) =>
+						item.ArmyId.toString()
+					}
+				/>
+				<View>
+					<ButtonContainer>
+						<Button
+							type='primary'
+							onPress={addArmyHandler}
+						>
+							Add Army
+						</Button>
+					</ButtonContainer>
+				</View>
 			</View>
 			<CustomModal
 				heading='Create Army'
@@ -156,19 +150,13 @@ const ArmyCreatorHome = () => {
 					</View>
 				</KeyboardAwareScrollView>
 			</CustomModal>
-		</View>
+		</>
 	);
 };
 
 export default ArmyCreatorHome;
 
 const styles = StyleSheet.create({
-	centeredView: {
-		flex: 1,
-		justifyContent: 'center',
-		marginTop: 22,
-		paddingHorizontal: 4,
-	},
 	modalView: {
 		backgroundColor: 'white',
 		borderRadius: 20,

@@ -4,7 +4,7 @@ import Text from '../../../Components/Atoms/Text';
 import Button from '../../../Components/Atoms/Button';
 import CustomModal from '../../../Components/Atoms/ModalCustom';
 import { useTheme, useNavigation } from '@react-navigation/native';
-import { useArmyContext } from '../../../Contexts/ArmyContext';
+import { useArmyContext } from '../../../Contexts/ArmyListCreator/ArmyContext';
 
 const ModalArmyOptions = ({ id, onClosePress, showModal }) => {
 	const nav = useNavigation();
@@ -24,9 +24,16 @@ const ModalArmyOptions = ({ id, onClosePress, showModal }) => {
 					onPress: () => {
 						onClosePress();
 						armyContext.deleteArmy(id);
+						armyContext.removeFocus();
 					},
 				},
-				{ text: 'Cancel' },
+				{
+					text: 'Cancel',
+					onPress: () => {
+						onClosePress();
+						armyContext.removeFocus();
+					},
+				},
 			]
 		);
 	};
@@ -39,11 +46,13 @@ const ModalArmyOptions = ({ id, onClosePress, showModal }) => {
 				toggleModalVisible={onClosePress}
 			>
 				<View
-					style={{
-						// flex: 1,
-						// flexDirection: 'column',
-						// justifyContent: 'space-between',
-					}}
+					style={
+						{
+							// flex: 1,
+							// flexDirection: 'column',
+							// justifyContent: 'space-between',
+						}
+					}
 				>
 					<View style={{ marginTop: 16 }}>
 						<Button

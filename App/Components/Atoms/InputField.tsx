@@ -1,15 +1,19 @@
 import { StyleSheet, View, TextInput } from 'react-native';
 import React from 'react';
 import { useTheme } from '@react-navigation/native';
-import { DarkThemeCustom } from '../../Themes/themes';
+import { DarkThemeCustom, LightThemeCustom } from '../../Themes/themes';
 import Text from './Text';
 
+export interface InputFieldProps {
+	labelName: string;
+	errors: any;
+}
 const InputField = (props) => {
 	const theme = useTheme();
 	return (
-		<View style={{marginVertical: 4}}>
+		<View style={{ marginVertical: 4 }}>
 			{props.labelName && (
-				<Text bold={true}>{props.labelName}</Text>
+				<Text bold={true}>{props.labelName}*</Text>
 			)}
 			<TextInput
 				{...props}
@@ -24,6 +28,7 @@ const InputField = (props) => {
 						: styles.lightTheme
 				}
 			/>
+			{props.errors && <Text isError={true}>{props.errors?.message}</Text>}
 		</View>
 	);
 };
@@ -35,6 +40,6 @@ const styles = StyleSheet.create({
 		color: DarkThemeCustom.colors.text,
 	},
 	lightTheme: {
-		color: DarkThemeCustom.colors.text,
+		color: LightThemeCustom.colors.text,
 	},
 });

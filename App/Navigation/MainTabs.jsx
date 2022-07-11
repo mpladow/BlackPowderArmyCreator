@@ -73,7 +73,7 @@ const MainTabs = () => {
 					elevation: 0,
 					backgroundColor: currentTheme.dark
 						? colors.grey1
-						: colors.lightGrey1,
+						: colors.offWhite1,
 					borderRadius: 15,
 					height: 50,
 					...styles.shadow,
@@ -187,10 +187,10 @@ export default MainTabs;
 
 const styles = StyleSheet.create({
 	shadow: {
-		shadowColor: '#7F5DF0',
+		shadowColor: '#191230',
 		shadowOffset: {
 			width: 0,
-			height: 10,
+			height: 15,
 		},
 		shadowOpacity: 0.25,
 		shadowRadius: 3.5,

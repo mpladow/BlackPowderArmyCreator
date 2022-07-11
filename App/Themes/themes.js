@@ -8,7 +8,8 @@ export const LightThemeCustom = {
 		background: colors.offWhite1,
 		card: colors.offWhite1,
 		border: colors.aquaMain,
-		notification: '#0F7A6C'
+		notification: '#0F7A6C',
+		danger: colors.dangerLight
 	},
 	styles: {
 		border: colors.black,
@@ -25,7 +26,8 @@ export const DarkThemeCustom = {
 		background: colors.black,
 		card: colors.black,
 		border: colors.aquaMain,
-		notification: '#0F7A6C'
+		notification: '#0F7A6C',
+		danger: colors.dangerDark
 	},
 	styles: {
 		border: colors.offWhite1,

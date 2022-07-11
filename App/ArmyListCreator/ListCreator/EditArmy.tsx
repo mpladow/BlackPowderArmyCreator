@@ -8,13 +8,17 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import PickerCustom from '../../Components/Atoms/PickerCustom';
 import Button from '../../Components/Atoms/Button';
 import uuid from 'react-native-uuid';
-import { useArmyContext } from '../../Contexts/ArmyContext';
+import { useArmyContext } from '../../Contexts/ArmyListCreator/ArmyContext';
+import { useCreatorContext } from '../../Contexts/ArmyListCreator/CreatorContext';
+import { Army } from '../../Models/ArmyCreator';
 
 const EditArmy = (props) => {
 	const [buttonLabel, setButtonLabel] = useState('Create Army');
 	const [buttonDisabled, setButtonDisabled] = useState(true);
 	const nav = useNavigation();
 	const armyContext = useArmyContext();
+	const creatorContext = useCreatorContext();
+	const [eraDropdown, setEraDropdown] = useState([]);
 	const {
 		control,
 		handleSubmit,
@@ -23,10 +27,10 @@ const EditArmy = (props) => {
 		formState: { errors, isDirty, isValid },
 	} = useForm({
 		defaultValues: {
-			Id: 0,
+			ArmyId: 0,
 			ArmyName: '',
 			ArmyNotes: '',
-			EraTemplate: 'napoleonics',
+			EraTemplateId: 1,
 		},
 	});
 
@@ -34,35 +38,61 @@ const EditArmy = (props) => {
 		console.log('getting route');
 		if (props.route.params.Id) {
 			let id = props.route.params.Id;
-			setValue('Id', id);
+			setValue('ArmyId', id);
 			let army = armyContext.getArmyById(id);
+			armyContext.focus(id);
 			setValue('ArmyName', army.ArmyName);
 			setValue('ArmyNotes', army.ArmyNotes);
-			setValue('EraTemplate', army.EraTemplate);
+			setValue('EraTemplateId', army.EraTemplateId);
 			setButtonLabel('Save Changes');
+		} else {
+			if (!armyContext.focusedArmy) {
+				setValue(
+					'ArmyName',
+					armyContext.focusedArmy?.ArmyName
+				);
+				setValue(
+					'ArmyNotes',
+					armyContext.focusedArmy?.ArmyNotes
+				);
+				setValue(
+					'EraTemplateId',
+					armyContext.focusedArmy?.EraTemplateId
+				);
+				setButtonLabel('Save Changes');
+			}
 		}
+
+		setEraDropdown(creatorContext.getEraDropdown);
 	}, []);
 
 	const onCancelPress = () => {
 		// prompt cancel if form is dirty
 		nav.goBack();
 	};
-	const onSubmitHandler = (data) => {
+	const onSubmitHandler = (data: Army) => {
 		console.log(data, 'DATA');
 
-		if (data.Id === 0) {
+		if (data.ArmyId == 0) {
+			console.log('ADDING ARMY');
 			//add
-			data.Id = uuid.v4();
+			data.ArmyId = Math.random() * 1000;
+			setValue('ArmyId', data.ArmyId);
+
 			// save army
 			armyContext.addArmy(data);
+			armyContext.focus(data.ArmyId);
 		} else {
+			console.log('EDITING ARMY');
 			//edit
 			armyContext.editArmy(data);
+			armyContext.focus(data.ArmyId);
 		}
-		nav.navigate('ArmyDetails', { Id: data.Id });
+		nav.navigate('ArmyDetails', {ArmyId: data.ArmyId});
 	};
 	const onErrorHandler = (error) => {
 		console.log(error, 'ERROR');
+		console.log(errors.ArmyName, 'All errors');
 	};
 
 	return (
@@ -85,6 +115,9 @@ const EditArmy = (props) => {
 							<InputField
 								labelName='Army Name'
 								value={value}
+								errors={
+									errors.ArmyName
+								}
 								placeholder={
 									'e.g., 1st Div, 2nd Div'
 								}
@@ -95,7 +128,9 @@ const EditArmy = (props) => {
 						)}
 						name={'ArmyName'}
 						control={control}
-						rules={{ required: true }}
+						rules={{
+							required: 'An army name is required',
+						}}
 					/>
 					<Controller
 						render={({
@@ -111,17 +146,21 @@ const EditArmy = (props) => {
 								placeholder={
 									'e.g., French 1812, British Waterloo'
 								}
-								onChangeText={(val) => {
-									onChange(val);
+								onChangeText={(
+									val
+								) => {
+									onChange(
+										val
+									);
 									console.log(
-										getValues(), 'values'
+										getValues(),
+										'values'
 									);
 								}}
 							/>
 						)}
 						name={'ArmyNotes'}
 						control={control}
-						rules={{ required: true }}
 					/>
 				</Card>
 			</View>
@@ -145,19 +184,10 @@ const EditArmy = (props) => {
 									itemValue
 								)
 							}
-							options={[
-								{
-									label: 'Napoleonics',
-									value: 'napoleonics',
-								},
-								{
-									label: 'Civil War',
-									value: 'civil_war',
-								},
-							]}
+							options={eraDropdown}
 						/>
 					)}
-					name={'EraTemplate'}
+					name={'EraTemplateId'}
 					control={control}
 				/>
 				<View
