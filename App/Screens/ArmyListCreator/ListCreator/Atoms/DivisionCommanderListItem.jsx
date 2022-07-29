@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Button from '../../../Components/Atoms/Button'
+import Button from '../../../../Components/Atoms/Button'
 import { Ionicons, Entypo } from '@expo/vector-icons';
 
 const DivisionCommanderListItem = ({commander, onRemoveDivisionCommanderPress, onEditDivisionCommanderPress}) => {

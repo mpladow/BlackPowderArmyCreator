@@ -29,10 +29,10 @@ const ArmyProvider = ({ children }) => {
 	const [focusedUnit, setFocusedUnit] = useState({} as Unit);
 
 	useEffect(() => {
+				AsyncStorage.removeItem('USER_ARMIES');
+				AsyncStorage.removeItem('USER_DIVISIONS');
 		getArmies();
-		// AsyncStorage.removeItem(
-		// 	'USER_ARMIES'
-		// );
+
 	}, []);
 	// set armies everytime an army is added/removed/edited to memory
 	useEffect(() => {
@@ -58,13 +58,8 @@ const ArmyProvider = ({ children }) => {
 		if (_divisions) {
 			const allDivisionsSerialised: Division[] =
 				JSON.parse(_divisions);
-			let armyDivisions = allDivisionsSerialised.filter(
-				(x) => x.ArmyId == focusedArmy?.ArmyId
-			);
-			setDivisions(armyDivisions);
+			setDivisions(allDivisionsSerialised);
 		}
-		const divisions = [...focusedArmy?.Divisions];
-		setDivisions(divisions);
 		return divisions;
 	};
 	const focus = (armyId: number) => {
@@ -93,7 +88,6 @@ const ArmyProvider = ({ children }) => {
 		army.EraTemplateId = newArmy.EraTemplateId;
 		army.Divisions = [];
 		army.DivisionIds = [];
-		console.log(newArmy, ' new army...');
 
 		const updatedArmies = [...armies, army];
 		completeArmiesUpdate(updatedArmies);
@@ -113,6 +107,7 @@ const ArmyProvider = ({ children }) => {
 		completeArmiesUpdate(updatedArmies);
 	};
 	const addDivision = (division: Division) => {
+		console.log(division, 'division on context')
 		const updatedDivisions = [...divisions, division];
 		completeDivisionsUpdate(updatedDivisions);
 	};
@@ -133,6 +128,12 @@ const ArmyProvider = ({ children }) => {
 	const getArmyById = (id) => {
 		return armies.find((x) => x.ArmyId == id);
 	};
+	const getDivisionsById = (id) => {
+return divisions.filter(x => x.ArmyId == id );
+	}
+	const getDivisionById = (id) => {
+		return divisions.find((x) => x.DivisionId == id);
+	} 
 	const deleteArmy = (id) => {
 		// deleting army
 		let updatedArmies = armies.filter((i) => i.ArmyId !== id);
@@ -169,6 +170,8 @@ const ArmyProvider = ({ children }) => {
 				editArmy,
 				deleteArmy,
 				getArmyById,
+				getDivisionsById,
+				getDivisionById,
 				getDivisionByArmyId,
 				focus,
 				removeFocus,

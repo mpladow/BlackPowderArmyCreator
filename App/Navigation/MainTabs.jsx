@@ -6,15 +6,15 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import HomeStack from '../ArmyListCreator/HomeStack';
-import ScoringStack from '../Scoring/ScoringStack';
+import HomeStack from '../Screens/ArmyListCreator/HomeStack';
+import ScoringStack from '../Screens/Scoring/ScoringStack';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
-import Reference from '../Reference/Reference';
+import Reference from '../Screens/Reference/Reference';
 import { useThemeContext } from '../Contexts/ThemeContext';
-import CombatAssistantStack from '../CombatAssistant/CombatAssistantStack';
+import CombatAssistantStack from '../Screens/CombatAssistant/CombatAssistantStack';
 import { useTheme } from '@react-navigation/native';
 import { colors } from '../Themes/Styling';
 

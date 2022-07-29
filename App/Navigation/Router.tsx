@@ -18,9 +18,9 @@ import { StatusBar } from 'expo-status-bar';
 import { colors } from '../Themes/Styling';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ReferenceProvider from '../Contexts/ReferenceContext';
-import ArmyCreatorHome from '../ArmyListCreator/ArmyCreatorHome';
+import ArmyCreatorHome from '../Screens/ArmyListCreator/ArmyCreatorHome';
 import Prototype from '../Debug/Prototype';
-import Reference from '../Reference/Reference';
+import Reference from '../Screens/Reference/Reference';
 import RulesProvider from '../Contexts/RulesContext';
 import CreatorProvider from '../Contexts/ArmyListCreator/CreatorContext';
 

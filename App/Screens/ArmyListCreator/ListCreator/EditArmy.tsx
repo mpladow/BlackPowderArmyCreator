@@ -1,16 +1,16 @@
 import { StyleSheet, Text, View, Image, ImageBackground } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import InputField from '../../Components/Atoms/InputField';
+import InputField from '../../../Components/Atoms/InputField';
 import { useTheme, useNavigation } from '@react-navigation/native';
-import Card from '../../Components/Atoms/Card';
+import Card from '../../../Components/Atoms/Card';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import PickerCustom from '../../Components/Atoms/PickerCustom';
-import Button from '../../Components/Atoms/Button';
+import PickerCustom from '../../../Components/Atoms/PickerCustom';
+import Button from '../../../Components/Atoms/Button';
 import uuid from 'react-native-uuid';
-import { useArmyContext } from '../../Contexts/ArmyListCreator/ArmyContext';
-import { useCreatorContext } from '../../Contexts/ArmyListCreator/CreatorContext';
-import { Army } from '../../Models/ArmyCreator';
+import { useArmyContext } from '../../../Contexts/ArmyListCreator/ArmyContext';
+import { useCreatorContext } from '../../../Contexts/ArmyListCreator/CreatorContext';
+import { Army } from '../../../Models/ArmyCreator';
 
 const EditArmy = (props) => {
 	const [buttonLabel, setButtonLabel] = useState('Create Army');
@@ -35,12 +35,10 @@ const EditArmy = (props) => {
 	});
 
 	useEffect(() => {
-		console.log('getting route');
-		if (props.route.params.Id) {
-			let id = props.route.params.Id;
+		if (props.route.params.ArmyId) {
+			let id = props.route.params.ArmyId;
 			setValue('ArmyId', id);
 			let army = armyContext.getArmyById(id);
-			armyContext.focus(id);
 			setValue('ArmyName', army.ArmyName);
 			setValue('ArmyNotes', army.ArmyNotes);
 			setValue('EraTemplateId', army.EraTemplateId);
@@ -70,7 +68,7 @@ const EditArmy = (props) => {
 		// prompt cancel if form is dirty
 		nav.goBack();
 	};
-	const onSubmitHandler = (data: Army) => {
+	const onSubmitHandler = async (data: Army) => {
 		console.log(data, 'DATA');
 
 		if (data.ArmyId == 0) {
@@ -81,15 +79,18 @@ const EditArmy = (props) => {
 
 			// save army
 			armyContext.addArmy(data);
-			armyContext.focus(data.ArmyId);
 		} else {
 			console.log('EDITING ARMY');
 			//edit
 			armyContext.editArmy(data);
-			armyContext.focus(data.ArmyId);
 		}
-		nav.navigate('ArmyDetails', {ArmyId: data.ArmyId});
+		setTimeout(() => {
+			nav.navigate('ArmyDetails', {
+				ArmyId: getValues('ArmyId'),
+			});
+		}, 1000);
 	};
+
 	const onErrorHandler = (error) => {
 		console.log(error, 'ERROR');
 		console.log(errors.ArmyName, 'All errors');
@@ -99,7 +100,7 @@ const EditArmy = (props) => {
 		<KeyboardAwareScrollView>
 			<Image
 				resizeMode='cover'
-				source={require('../../../assets/images/banner_napoleon.jpg')}
+				source={require('../../../../assets/images/banner_napoleon.jpg')}
 				style={[{ height: 170, width: null }]}
 			/>
 			<View style={{ margin: 16, marginTop: -15 }}>

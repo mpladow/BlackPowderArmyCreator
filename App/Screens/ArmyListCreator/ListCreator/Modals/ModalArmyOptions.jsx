@@ -1,17 +1,17 @@
 import { Alert, StyleSheet, View } from 'react-native';
 import React from 'react';
-import Text from '../../../Components/Atoms/Text';
-import Button from '../../../Components/Atoms/Button';
-import CustomModal from '../../../Components/Atoms/ModalCustom';
+import Text from '../../../../Components/Atoms/Text';
+import Button from '../../../../Components/Atoms/Button';
+import CustomModal from '../../../../Components/Atoms/ModalCustom';
 import { useTheme, useNavigation } from '@react-navigation/native';
-import { useArmyContext } from '../../../Contexts/ArmyListCreator/ArmyContext';
+import { useArmyContext } from '../../../../Contexts/ArmyListCreator/ArmyContext';
 
 const ModalArmyOptions = ({ id, onClosePress, showModal }) => {
 	const nav = useNavigation();
 	const armyContext = useArmyContext();
 
 	const onEditPress = () => {
-		nav.navigate('EditArmy', { Id: id });
+		nav.navigate('EditArmy', { ArmyId: id });
 	};
 	const onDeletePress = () => {
 		console.log(id, 'ID');
