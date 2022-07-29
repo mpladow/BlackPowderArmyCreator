@@ -7,18 +7,18 @@ import {
 	Alert,
 } from 'react-native';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import Text from '../../Components/Atoms/Text';
-import Container from '../../Components/Atoms/Container';
-import Button from '../../Components/Atoms/Button';
+import Text from '../../../Components/Atoms/Text';
+import Container from '../../../Components/Atoms/Container';
+import Button from '../../../Components/Atoms/Button';
 import { useNavigation } from '@react-navigation/native';
-import { useArmyContext } from '../../Contexts/ArmyListCreator/ArmyContext';
-import { useRulesContext } from '../../Contexts/RulesContext';
-import Card from '../../Components/Atoms/Card';
+import { useArmyContext } from '../../../Contexts/ArmyListCreator/ArmyContext';
+import { useRulesContext } from '../../../Contexts/RulesContext';
+import Card from '../../../Components/Atoms/Card';
 import { useTheme } from '@react-navigation/native';
 import { Ionicons, Entypo, EvilIcons } from '@expo/vector-icons';
-import Heading from '../../Components/Atoms/Heading';
-import UnitListItem from './Atoms.jsx/UnitListItem';
-import { Army } from '../../Models/ArmyCreator';
+import Heading from '../../../Components/Atoms/Heading';
+import { Army, Division } from '../../../Models/ArmyCreator';
+import UnitListItem from './Atoms/UnitListItem';
 
 const ArmyDetails = ({ route, edit }) => {
 	// states that will hold army indivisula army details for each section
@@ -28,26 +28,59 @@ const ArmyDetails = ({ route, edit }) => {
 	const nav = useNavigation();
 	const armyContext = useArmyContext();
 	const theme = useTheme();
+	const [focusedArmy, setFocusedArmy] = useState({} as Army);
+	const [focusedArmyDivisions, setFocusedArmyDivisions] = useState(
+		[] as Division[]
+	);
+	const [armyId, setArmyId] = useState(0 as number);
 
 	useEffect(() => {
-		if (route.params && route.params?.ArmyId) {
-			route.params &&
-				route.params?.ArmyId &&
-				armyContext.focus(route.params.ArmyId);
-			let _id = route.params.ArmyId;
-			let _army = armyContext.getArmyById(_id);
-		}
+		const unsubscribe = nav.addListener('focus', () => {
+			if (route.params && route.params?.ArmyId) {
+				let _id = route.params.ArmyId;
+				setArmyId(_id);
+				let _army = armyContext.getArmyById(_id);
+				setFocusedArmy(_army);
+			}
+		});
 
-		//get army from asynclocalstorage
-		if (armyContext.focusedArmy) {
-			console.log(armyContext.focusedArmy, 'FOCUSED ARMY');
-			nav.setOptions({
-				headerTitle: armyContext.focusedArmy?.ArmyName,
-				title: armyContext.focusedArmy?.ArmyName,
-			});
-			// setDivisions(rulesContext.EXAMPLE_ARMY.Divisions);
+		// Return the function to unsubscribe from the event so it gets removed on unmount
+		return unsubscribe;
+	}, [nav]);
+
+	// useEffect(() => {
+	// 	if (route.params && route.params?.ArmyId) {
+	// 		console.log(route.params?.ArmyId, 'army');
+	// 		let _id = route.params.ArmyId;
+	// 		setArmyId(_id);
+	// 		let _army = armyContext.getArmyById(armyId);
+	// 		setFocusedArmy(_army);
+	// 	}
+	// }, []);
+	useEffect(() => {
+		// get all divisions
+		let _divisions = armyContext.getDivisionsById(armyId);
+		setFocusedArmyDivisions(_divisions);
+	}, [focusedArmy]);
+
+	useEffect(() => {
+		if (focusedArmy) {
+			let _divisions = armyContext.getDivisionsById(
+				focusedArmy.ArmyId
+			);
+
+			setFocusedArmyDivisions(_divisions);
+		} else {
+			console.log('NOT FOUND');
 		}
-	}, [armyContext.focusedArmy]);
+	}, [armyContext.divisions]);
+
+	useEffect(() => {
+		nav.setOptions({
+			headerTitle: armyContext.focusedArmy?.ArmyName,
+			title: armyContext.focusedArmy?.ArmyName,
+		});
+	}, [focusedArmy]);
 
 	useLayoutEffect(() => {
 		nav.setOptions({
@@ -193,8 +226,11 @@ const ArmyDetails = ({ route, edit }) => {
 	// 	);
 	// };
 	const onEditDivisionPress = (divisionId: number) => {
-		console.log(divisionId, 'div id')
-		nav.navigate("EditDivision", {DivisionId: divisionId})
+		console.log(divisionId, 'div id');
+		nav.navigate('EditDivision', {
+			DivisionId: divisionId,
+			ArmyId: armyId,
+		});
 	};
 
 	// const onUnitDeletePress = (divisionId, brigadeId, unitId) => {
@@ -235,13 +271,16 @@ const ArmyDetails = ({ route, edit }) => {
 	// };
 
 	const onAddDivisionPress = (id) => {
-		nav.navigate('EditDivision');
+		nav.navigate('EditDivision', {
+			DivisionId: 0,
+			ArmyId: armyId,
+		});
 	};
 	const renderDivisions = () => {
-		if (armyContext.divisions?.length > 0) {
+		if (focusedArmyDivisions?.length > 0) {
 			return (
 				<FlatList
-					data={armyContext.divisions}
+					data={focusedArmyDivisions}
 					keyExtractor={(div) =>
 						div.DivisionId?.toString()
 					}
@@ -262,7 +301,11 @@ const ArmyDetails = ({ route, edit }) => {
 										alignItems: 'flex-end',
 									}}
 								>
-									<Heading size={2}>
+									<Heading
+										size={
+											2
+										}
+									>
 										{
 											div
 												.item

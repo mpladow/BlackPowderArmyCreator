@@ -1,15 +1,13 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import React from 'react';
-import CreateUnit from '../CreateUnit';
-import Text from '../../../Components/Atoms/Text';
+import Text from '../../../../Components/Atoms/Text';
 import { useTheme } from '@react-navigation/native';
 import {
 	MaterialCommunityIcons,
 	Foundation,
 	AntDesign,
 } from '@expo/vector-icons';
-import Logo from '../../../../assets/images/icon_shooting.svg';
-import { colors } from '../../../Themes/Styling';
+
 
 const UnitListItem = ({ unit, onDeletePress, editMode }) => {
 	const theme = useTheme();

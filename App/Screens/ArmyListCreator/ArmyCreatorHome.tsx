@@ -8,23 +8,23 @@ import {
 	ListRenderItemInfo,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import ListItem from '../Components/Atoms/ListItem';
-import Button from '../Components/Atoms/Button';
-import ButtonContainer from '../Components/Atoms/ButtonContainer';
+import ListItem from '../../Components/Atoms/ListItem';
+import Button from '../../Components/Atoms/Button';
+import ButtonContainer from '../../Components/Atoms/ButtonContainer';
 import { FontAwesome } from '@expo/vector-icons';
 import { Controller, useForm } from 'react-hook-form';
 import { onChange } from 'react-native-reanimated';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import ListItemSpacer from '../Components/Atoms/ListItemSpacer';
-import Text from '../Components/Atoms/Text';
-import CustomModal from '../Components/Atoms/ModalCustom';
-import Container from '../Components/Atoms/Container';
-import Heading from '../Components/Atoms/Heading';
+import ListItemSpacer from '../../Components/Atoms/ListItemSpacer';
+import Text from '../../Components/Atoms/Text';
+import CustomModal from '../../Components/Atoms/ModalCustom';
+import Container from '../../Components/Atoms/Container';
+import Heading from '../../Components/Atoms/Heading';
 import { useNavigation } from '@react-navigation/native';
-import InputField from '../Components/Atoms/InputField';
-import { useArmyContext } from '../Contexts/ArmyListCreator/ArmyContext';
+import InputField from '../../Components/Atoms/InputField';
+import { useArmyContext } from '../../Contexts/ArmyListCreator/ArmyContext';
 import { useTheme } from '@react-navigation/native';
-import { Army } from '../Models/ArmyCreator';
+import { Army } from '../../Models/ArmyCreator';
 
 const ArmyCreatorHome = () => {
 	const [showArmyModal, setShowArmyModal] = useState(false);
@@ -44,7 +44,7 @@ const ArmyCreatorHome = () => {
 	};
 	const onArmyListItemPressHandler = (id) => {
 		armyContext.focus(id);
-		nav.navigate('ArmyDetails');
+		nav.navigate('ArmyDetails', {ArmyId: id });
 	};
 	return (
 		<>

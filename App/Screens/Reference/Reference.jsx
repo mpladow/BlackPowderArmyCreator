@@ -8,15 +8,15 @@ import {
 import React, { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { FontAwesome } from '@expo/vector-icons';
-import Button from '../Components/Atoms/Button';
+import Button from '../../Components/Atoms/Button';
 import ReferenceModal from './ReferenceModal';
 import ReferenceListItem from './Atoms/ReferenceListItem';
-import ListItemSpacer from '../Components/Atoms/ListItemSpacer';
-import Text from '../Components/Atoms/Text';
-import { colors } from '../Themes/Styling';
-import CustomModal from '../Components/Atoms/ModalCustom';
-import Heading from '../Components/Atoms/Heading';
-import { useReferenceContext } from '../Contexts/ReferenceContext';
+import ListItemSpacer from '../../Components/Atoms/ListItemSpacer';
+import Text from '../../Components/Atoms/Text';
+import { colors } from '../../Themes/Styling';
+import CustomModal from '../../Components/Atoms/ModalCustom';
+import Heading from '../../Components/Atoms/Heading';
+import { useReferenceContext } from '../../Contexts/ReferenceContext';
 
 const Reference = () => {
 	const [focusedItem, setFocusedItem] = useState();
