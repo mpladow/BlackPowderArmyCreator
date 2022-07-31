@@ -1,23 +1,7 @@
-import {
-	createContext,
-	useEffect,
-	useState,
-	useContext,
-	useCallback,
-} from 'react';
+import { createContext, useEffect, useState, useContext, useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-	Armament,
-	Army,
-	Brigade,
-	Division,
-	EraTemplate,
-	SpecialRule,
-	Unit,
-	UnitTemplate,
-	UnitType,
-} from '../../Models/ArmyCreator';
+import { Armament, Army, Brigade, Division, EraTemplate, SpecialRule, Unit, UnitTemplate, UnitType } from '../../Models/ArmyCreator';
 
 const ArmyContext = createContext(undefined);
 const ArmyProvider = ({ children }) => {
@@ -32,12 +16,9 @@ const ArmyProvider = ({ children }) => {
 	// set armies everytime an army is added/removed/edited to memory
 
 	const getDivisionsFromMemory = async () => {
-		const _armies = await AsyncStorage.getItem(
-			'USER_DIVISIONS_ALL'
-		);
+		const _armies = await AsyncStorage.getItem('USER_DIVISIONS_ALL');
 		if (_armies) {
-			const armiesSerialised: Division[] =
-				JSON.parse(_armies);
+			const armiesSerialised: Division[] = JSON.parse(_armies);
 			setDivisions(armiesSerialised);
 			return armiesSerialised;
 		}
@@ -51,8 +32,16 @@ const ArmyProvider = ({ children }) => {
 	};
 
 	const getBrigadeById = (id, divisionId) => {
-		let _brigade = divisions.find((x) => x.Brigades)
-	} 
+		let _brigade = divisions.find((x) => x.Brigades);
+	};
+
+	const addBrigade = (newBrigade: Brigade) => {
+		let division = divisions.find((x) => x.DivisionId == newBrigade.DivisionId);
+		let updatedBrigs = [...division.Brigades, newBrigade];
+		division.Brigades = updatedBrigs;
+	};
+
+	const editBrigade = (newBrigade) => {};
 
 	const addDivision = async (newArmy: Division) => {
 		const division = new Division();
@@ -70,13 +59,10 @@ const ArmyProvider = ({ children }) => {
 	};
 
 	const editDivision = (division: Division) => {
-		const itemIndex = divisions.findIndex(
-			(d) => d.DivisionId == division.DivisionId
-		);
+		const itemIndex = divisions.findIndex((d) => d.DivisionId == division.DivisionId);
 
 		const updatedDivisions = [...divisions] as Division[];
-		updatedDivisions[itemIndex].DivisionName =
-			division.DivisionName;
+		updatedDivisions[itemIndex].DivisionName = division.DivisionName;
 		// TODO - update commander
 		setDivisions(updatedDivisions);
 		updateArmiesListInMemory(updatedDivisions);
@@ -84,9 +70,7 @@ const ArmyProvider = ({ children }) => {
 
 	const deleteDivision = (id) => {
 		// deleting army
-		let updatedDivisions = divisions.filter(
-			(i) => i.DivisionId !== id
-		);
+		let updatedDivisions = divisions.filter((i) => i.DivisionId !== id);
 		updateArmiesListInMemory(updatedDivisions);
 		setDivisions(updatedDivisions);
 	};
@@ -95,7 +79,6 @@ const ArmyProvider = ({ children }) => {
 		let divisionsString = JSON.stringify(divisions);
 		AsyncStorage.setItem('USER_DIVISIONS_ALL', divisionsString);
 	};
-
 
 	return (
 		<ArmyContext.Provider
@@ -118,9 +101,7 @@ export default ArmyProvider;
 export const useArmyContext = () => {
 	const context = useContext(ArmyContext);
 	if (!context) {
-		throw new Error(
-			'useArmyContext can only be used wtihin an ArmyProvider'
-		);
+		throw new Error('useArmyContext can only be used wtihin an ArmyProvider');
 	}
 	return context;
 };
