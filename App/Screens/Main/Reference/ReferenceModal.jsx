@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, FlatList, SectionList } from "react-native";
 import React, { useEffect, useState } from "react";
-import Heading from "../../Components/Atoms/Heading";
-import { useReferenceContext } from "../../Contexts/ReferenceContext";
+import Heading from "../../../Components/Atoms/Heading";
+import { useReferenceContext } from "../../../Contexts/ReferenceContext";
 import OneTwoTemplate from "./Templates/OneTwoTemplate";
 import TwoOneTemplate from "./Templates/TwoOneTemplate";
 import OneOneTemplate from "./Templates/OneOneTemplate";

@@ -1,14 +1,14 @@
 import 'react-native-gesture-handler';
 import { StyleSheet, View, Pressable } from 'react-native';
 import React from 'react';
-import ArmyCreatorHome from './ArmyCreatorHome';
+import ArmyCreatorHome from './ListCreatorHome';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import Text from '../../Components/Atoms/Text';
-import ProfileButton from '../../Profile/ProfileButton';
-import EditArmy from './ListCreator/EditArmy';
+import Text from '../../../Components/Atoms/Text';
+import ProfileButton from '../../../Profile/ProfileButton';
+import EditArmy from './ListCreator/EditArmy/EditArmy';
 import ArmyDetails from './ListCreator/ArmyDetails';
-import EditDivision from './ListCreator/EditDivision';
+import EditDivision from './ListCreator/EditDivision/EditDivision';
 
 const HomeStack = () => {
 	const Stack = createNativeStackNavigator();

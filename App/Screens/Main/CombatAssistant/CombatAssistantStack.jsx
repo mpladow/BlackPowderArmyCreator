@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import ProfileButton from '../../Profile/ProfileButton';
+import ProfileButton from '../../../Profile/ProfileButton';
 import Home from './Home';
 
 

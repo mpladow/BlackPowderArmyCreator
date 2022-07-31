@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import React from 'react';
-import Text from '../../../../Components/Atoms/Text';
+import Text from '../../../../../Components/Atoms/Text';
 import { useTheme } from '@react-navigation/native';
 import {
 	MaterialCommunityIcons,

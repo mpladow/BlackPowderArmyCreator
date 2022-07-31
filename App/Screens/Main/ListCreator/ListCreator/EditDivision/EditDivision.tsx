@@ -1,16 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import ModalCustom from '../../../Components/Atoms/ModalCustom';
+import ModalCustom from '../../../../../Components/Atoms/ModalCustom';
 import { useTheme, useNavigation } from '@react-navigation/native';
-import InputField from '../../../Components/Atoms/InputField';
-import Button from '../../../Components/Atoms/Button';
+import InputField from '../../../../../Components/Atoms/InputField';
+import Button from '../../../../../Components/Atoms/Button';
 import uuid from 'react-native-uuid';
 
 import { Controller, useForm } from 'react-hook-form';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import Card from '../../../Components/Atoms/Card';
-import { useArmyContext } from '../../../Contexts/ArmyListCreator/ArmyContext';
-import { Division } from '../../../Models/ArmyCreator';
+import Card from '../../../../../Components/Atoms/Card';
+import { useArmyContext } from '../../../../../Contexts/ArmyListCreator/ArmyContext';
+import { Division } from '../../../../../Models/ArmyCreator';
 
 const EditDivision = (props) => {
 	const [buttonLabel, setButtonLabel] = useState('Create Division');
