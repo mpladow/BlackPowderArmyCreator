@@ -104,6 +104,7 @@ IsCustom: boolean;
 export class Commander {
 	public CommanderId: number;
 	public ArmyId: number;
+	public CommandRating: number;
 	public CommanderFirstName: string;
 	public CommanderSurname: string;
 	public CommanderRank: string;

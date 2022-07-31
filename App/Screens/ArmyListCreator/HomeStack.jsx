@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import { StyleSheet, View, Pressable } from 'react-native';
 import React from 'react';
-import ArmyCreatorHome from './ArmyCreatorHome';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import Text from '../../Components/Atoms/Text';
@@ -9,6 +8,7 @@ import ProfileButton from '../../Profile/ProfileButton';
 import EditArmy from './ListCreator/EditArmy';
 import ArmyDetails from './ListCreator/ArmyDetails';
 import EditDivision from './ListCreator/EditDivision';
+import ListCreatorHome from './ArmyCreatorHome';
 
 const HomeStack = () => {
 	const Stack = createNativeStackNavigator();
@@ -33,9 +33,9 @@ const HomeStack = () => {
 			}}
 		>
 			<Stack.Screen
-				name='Summary'
+				name='ListCreatorHome'
 				options={{ headerTitle: 'BP Companion' }}
-				component={ArmyCreatorHome}
+				component={ListCreatorHome}
 			/>
 			<Stack.Screen
 				name='EditArmy'

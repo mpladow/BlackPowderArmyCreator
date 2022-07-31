@@ -26,7 +26,7 @@ import { useArmyContext } from '../../Contexts/ArmyListCreator/ArmyContext';
 import { useTheme } from '@react-navigation/native';
 import { Army } from '../../Models/ArmyCreator';
 
-const ArmyCreatorHome = () => {
+const ListCreatorHome = () => {
 	const [showArmyModal, setShowArmyModal] = useState(false);
 
 	const {
@@ -48,7 +48,7 @@ const ArmyCreatorHome = () => {
 	};
 	return (
 		<>
-			<View style={{flex: 4, marginBottom: 100}}>
+			<Container style={{ marginBottom: 150 }}>
 				<FlatList
 					data={armyContext.armies}
 					ListHeaderComponent={() => (
@@ -73,8 +73,10 @@ const ArmyCreatorHome = () => {
 						item,
 					}: ListRenderItemInfo<Army>) => (
 						<ListItem
-							id={item.ArmyId}
-							title={item.ArmyName}
+							id={item.DivisionId}
+							title={
+								item.DivisionName
+							}
 							description={
 								item.ArmyNotes
 							}
@@ -85,9 +87,9 @@ const ArmyCreatorHome = () => {
 							}
 						/>
 					)}
-					keyExtractor={(item) =>
-						item.ArmyId.toString()
-					}
+					// keyExtractor={(item) =>
+					// 	item.DivisionId.toString()
+					// }
 				/>
 				<View>
 					<ButtonContainer>
@@ -99,7 +101,7 @@ const ArmyCreatorHome = () => {
 						</Button>
 					</ButtonContainer>
 				</View>
-			</View>
+			</Container>
 			<CustomModal
 				heading='Create Army'
 				toggleModalVisible={() =>
@@ -111,7 +113,7 @@ const ArmyCreatorHome = () => {
 					<View style={styles.modalContent}>
 						<Controller
 							control={control}
-							name='ArmyName'
+							name='Name'
 							render={({
 								field: {
 									onChange,
@@ -154,7 +156,7 @@ const ArmyCreatorHome = () => {
 	);
 };
 
-export default ArmyCreatorHome;
+export default ListCreatorHome;
 
 const styles = StyleSheet.create({
 	modalView: {

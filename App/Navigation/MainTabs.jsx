@@ -112,33 +112,6 @@ const MainTabs = () => {
 				name='Tracker'
 				component={ScoringStack}
 			/>
-			{/* <Tab.Screen
-				options={{
-					headerShadowVisible: false,
-					headerTitle: 'Quick Reference Sheet',
-					headerTitleStyle: {
-						fontFamily: 'NotoSans_700Bold',
-						fontSize: 18,
-					},
-					headerShown: true,
-					tabBarIcon: ({ color, size }) => (
-						<Entypo
-							name='text-document'
-							size={18}
-							color={color}
-						/>
-					),
-					tabBarLabel: '',
-					tabBarButton: (props) => (
-						<CustomTabBarButton
-							{...props}
-						/>
-					),
-				}}
-				name='Reference'
-				component={Reference}
-			/> */}
-
 			<Tab.Screen
 				options={{
 					headerShadowVisible: false,
@@ -157,26 +130,6 @@ const MainTabs = () => {
 					),
 				}}
 				name='Reference'
-				component={Reference}
-			/>
-			<Tab.Screen
-				options={{
-					headerShadowVisible: false,
-					headerTitle: 'Quick Reference Sheet',
-					headerTitleStyle: {
-						fontFamily: 'NotoSans_700Bold',
-						fontSize: 18,
-					},
-					headerShown: true,
-					tabBarIcon: ({ color, size }) => (
-						<Entypo
-							name='text-document'
-							size={18}
-							color={color}
-						/>
-					),
-				}}
-				name='Victory Points'
 				component={Reference}
 			/>
 		</Tab.Navigator>

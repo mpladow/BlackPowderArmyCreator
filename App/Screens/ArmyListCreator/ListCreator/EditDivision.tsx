@@ -8,6 +8,8 @@ import uuid from 'react-native-uuid';
 
 import { Controller, useForm } from 'react-hook-form';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+import { StackActions, CommonActions } from '@react-navigation/native';
 import Card from '../../../Components/Atoms/Card';
 import { useArmyContext } from '../../../Contexts/ArmyListCreator/ArmyContext';
 import { Division } from '../../../Models/ArmyCreator';
@@ -62,19 +64,32 @@ const EditDivision = (props) => {
 			data.DivisionId = parseFloat(uuid.v4().toString());
 			console.log(data, 'DivisionId new');
 			armyContext.addDivision(data);
-			setTimeout(() => {
-				nav.goBack();
-			}, 500);
+
+				nav.dispatch(
+					StackActions.replace('Summary', {
+						DivisionId: getValues(
+							'DivisionId'
+						),
+					})
+				);
+
 		} else {
-							console.log(
-								data.DivisionId,
-								'DivisionId edit'
-							);
+			console.log(data.DivisionId, 'DivisionId edit');
 
 			armyContext.editDivision(data);
-			setTimeout(() => {
-				nav.navigate('ArmyDetails', {ArmyId: getValues('ArmyId')});
-			}, 500);
+
+				nav.dispatch(
+					StackActions.replace('ArmyDetails', {
+						DivisionId: getValues(
+							'DivisionId'
+						),
+					})
+				);
+
+
+
+				// nav.navigate('ArmyDetails', {DivisionId: getValues('DivisionId')});
+
 		}
 
 		setLoading(false);

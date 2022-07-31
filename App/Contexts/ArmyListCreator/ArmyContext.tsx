@@ -23,16 +23,11 @@ const ArmyProvider = ({ children }) => {
 	// Manage theme state
 	const [armies, setArmies] = useState([] as Army[]);
 	const [divisions, setDivisions] = useState([] as Division[]);
-	const [units, setUnits] = useState([] as Unit[]);
-	const [focusedArmy, setFocusedArmy] = useState({} as Army);
-	const [focusedDivision, setFocusedDivision] = useState({} as Division);
-	const [focusedUnit, setFocusedUnit] = useState({} as Unit);
 
 	useEffect(() => {
-				AsyncStorage.removeItem('USER_ARMIES');
-				AsyncStorage.removeItem('USER_DIVISIONS');
-		getArmies();
-
+		// AsyncStorage.removeItem('USER_DIVISIONS_ALL');
+		// AsyncStorage.removeItem('USER_DIVISIONS');
+		getDivisionsFromMemory();
 	}, []);
 	// set armies everytime an army is added/removed/edited to memory
 	useEffect(() => {
@@ -40,77 +35,44 @@ const ArmyProvider = ({ children }) => {
 		AsyncStorage.setItem('USER_ARMIES', armiesString);
 	}, [armies]);
 
-	useEffect(() => {
-		getDivisions();
-	}, [focusedArmy]);
-	useEffect(() => {}, [armies]);
-
-	const getArmies = async () => {
-		// check local storage for saved armies
-		const _armies = await AsyncStorage.getItem('USER_ARMIES');
-		if (_armies) {
-			const armiesSerialised: Army[] = JSON.parse(_armies);
-			setArmies(armiesSerialised);
-		}
-	};
-	const getDivisions = async () => {
-		const _divisions = await AsyncStorage.getItem('USER_DIVISIONS');
-		if (_divisions) {
-			const allDivisionsSerialised: Division[] =
-				JSON.parse(_divisions);
-			setDivisions(allDivisionsSerialised);
-		}
-		return divisions;
-	};
-	const focus = (armyId: number) => {
-		let army = armies.find((a) => a.ArmyId == armyId);
-		setFocusedArmy(army);
-	};
-
-	const removeFocus = () => {
-		setFocusedArmy({} as Army);
-	};
-	const focusDivision = (divisionId: number) => {
-		let division = focusedArmy.Divisions.find(
-			(div) => div.DivisionId == divisionId
+	const getDivisionsFromMemory = async () => {
+		const _armies = await AsyncStorage.getItem(
+			'USER_DIVISIONS_ALL'
 		);
-		setFocusedDivision(division);
-	};
-	const removeDivisionFocus = () => {
-		setFocusedDivision({} as Division);
+		if (_armies) {
+			const armiesSerialised: Division[] =
+				JSON.parse(_armies);
+			setDivisions(armiesSerialised);
+			return armiesSerialised;
+		}
 	};
 
-	const addArmy = (newArmy: Army) => {
-		const army = new Army();
-		army.ArmyId = newArmy.ArmyId;
-		army.ArmyName = newArmy.ArmyName;
-		army.ArmyNotes = newArmy.ArmyNotes;
-		army.EraTemplateId = newArmy.EraTemplateId;
-		army.Divisions = [];
-		army.DivisionIds = [];
+	const getDivisionById = (id) => {
+		let _div = divisions.find((x) => x.DivisionId == id);
+		console.log(_div, 'dov');
+		console.log(id, 'id');
+		return _div;
+	};
 
-		const updatedArmies = [...armies, army];
-		completeArmiesUpdate(updatedArmies);
+	const getBrigadeById = (id, divisionId) => {
+		let _brigade = divisions.find((x) => x.Brigades)
+	} 
+
+	const addDivision = async (newArmy: Division) => {
+		const division = new Division();
+		division.DivisionId = newArmy.DivisionId;
+		division.DivisionName = newArmy.DivisionName;
+		division.DivisionNotes = newArmy.DivisionNotes;
+		division.EraTemplateId = newArmy.EraTemplateId;
+		division.Brigades = [];
+
+		const updatedDivisions = [...divisions, division];
+
+		updateArmiesListInMemory(updatedDivisions);
+		setDivisions(updatedDivisions);
 		// setFocusedArmy(army);
 	};
 
-	const editArmy = (army: Army) => {
-		const itemIndex = armies.findIndex(
-			(item) => item.ArmyId === army.ArmyId
-		);
-		const updatedArmies = [...armies] as Army[];
-
-		updatedArmies[itemIndex].ArmyName = army.ArmyName;
-		updatedArmies[itemIndex].ArmyNotes = army.ArmyNotes;
-		updatedArmies[itemIndex].EraTemplateId = army.EraTemplateId;
-
-		completeArmiesUpdate(updatedArmies);
-	};
-	const addDivision = (division: Division) => {
-		console.log(division, 'division on context')
-		const updatedDivisions = [...divisions, division];
-		completeDivisionsUpdate(updatedDivisions);
-	};
 	const editDivision = (division: Division) => {
 		const itemIndex = divisions.findIndex(
 			(d) => d.DivisionId == division.DivisionId
@@ -122,41 +84,16 @@ const ArmyProvider = ({ children }) => {
 		completeDivisionsUpdate(updatedDivisons);
 	};
 
-	const getDivisionByArmyId = (id: number) => {
-		return divisions.filter(d => d.DivisionId == id);
-	}
-	const getArmyById = (id) => {
-		return armies.find((x) => x.ArmyId == id);
-	};
-	const getDivisionsById = (id) => {
-return divisions.filter(x => x.ArmyId == id );
-	}
-	const getDivisionById = (id) => {
-		return divisions.find((x) => x.DivisionId == id);
-	} 
-	const deleteArmy = (id) => {
+	const deleteDivision = (id) => {
 		// deleting army
-		let updatedArmies = armies.filter((i) => i.ArmyId !== id);
-		completeArmiesUpdate(updatedArmies);
-	};
-
-	// helper functions
-	const completeArmiesUpdate = (updatedArmies) => {
-		setArmies(updatedArmies);
-		// set to memory
-		updateArmiesListInMemory(updatedArmies);
-	};
-
-	const completeDivisionsUpdate = (updatedDivisions) => {
+		let updatedDivisions = divisions.filter(
+			(i) => i.DivisionId !== id
+		);
+		updateArmiesListInMemory(updatedDivisions);
 		setDivisions(updatedDivisions);
-		updateDivisionsInMemory(updatedDivisions);
 	};
 
-	const updateArmiesListInMemory = (armyList: Army[]) => {
-		let armiesString = JSON.stringify(armyList);
-		AsyncStorage.setItem('USER_ARMIES', armiesString);
-	};
-	const updateDivisionsInMemory = (divisions: Division[]) => {
+	const updateArmiesListInMemory = (divisions: Division[]) => {
 		let divisionsString = JSON.stringify(divisions);
 		AsyncStorage.setItem('USER_DIVISIONS', divisionsString);
 	};
@@ -164,23 +101,10 @@ return divisions.filter(x => x.ArmyId == id );
 	return (
 		<ArmyContext.Provider
 			value={{
-				armies,
 				divisions,
-				addArmy,
-				editArmy,
-				deleteArmy,
-				getArmyById,
-				getDivisionsById,
+				deleteDivision,
 				getDivisionById,
-				getDivisionByArmyId,
-				focus,
-				removeFocus,
-				focusedArmy,
-
-				getDivisions,
-				focusedDivision,
-				focusDivision,
-				removeDivisionFocus,
+				getBrigadeById,
 				addDivision,
 				editDivision,
 			}}
