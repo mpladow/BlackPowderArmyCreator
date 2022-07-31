@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import ModalCustom from '../../../Components/Atoms/ModalCustom';
+import ModalCustom from '../../../../../Components/Atoms/ModalCustom';
 import { useTheme, useNavigation } from '@react-navigation/native';
-import InputField from '../../../Components/Atoms/InputField';
-import Button from '../../../Components/Atoms/Button';
+import InputField from '../../../../../Components/Atoms/InputField';
+import Button from '../../../../../Components/Atoms/Button';
 import uuid from 'react-native-uuid';
 
 import { Controller, useForm } from 'react-hook-form';

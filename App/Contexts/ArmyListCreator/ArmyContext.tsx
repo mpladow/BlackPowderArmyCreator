@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
 	Armament,
 	Army,
+	Brigade,
 	Division,
 	EraTemplate,
 	SpecialRule,
@@ -21,7 +22,6 @@ import {
 const ArmyContext = createContext(undefined);
 const ArmyProvider = ({ children }) => {
 	// Manage theme state
-	const [armies, setArmies] = useState([] as Army[]);
 	const [divisions, setDivisions] = useState([] as Division[]);
 
 	useEffect(() => {
@@ -30,10 +30,6 @@ const ArmyProvider = ({ children }) => {
 		getDivisionsFromMemory();
 	}, []);
 	// set armies everytime an army is added/removed/edited to memory
-	useEffect(() => {
-		let armiesString = JSON.stringify(armies);
-		AsyncStorage.setItem('USER_ARMIES', armiesString);
-	}, [armies]);
 
 	const getDivisionsFromMemory = async () => {
 		const _armies = await AsyncStorage.getItem(
@@ -78,10 +74,12 @@ const ArmyProvider = ({ children }) => {
 			(d) => d.DivisionId == division.DivisionId
 		);
 
-		const updatedDivisons = [...divisions] as Division[];
-		updatedDivisons[itemIndex].DivisionName = division.DivisionName;
+		const updatedDivisions = [...divisions] as Division[];
+		updatedDivisions[itemIndex].DivisionName =
+			division.DivisionName;
 		// TODO - update commander
-		completeDivisionsUpdate(updatedDivisons);
+		setDivisions(updatedDivisions);
+		updateArmiesListInMemory(updatedDivisions);
 	};
 
 	const deleteDivision = (id) => {
@@ -95,8 +93,9 @@ const ArmyProvider = ({ children }) => {
 
 	const updateArmiesListInMemory = (divisions: Division[]) => {
 		let divisionsString = JSON.stringify(divisions);
-		AsyncStorage.setItem('USER_DIVISIONS', divisionsString);
+		AsyncStorage.setItem('USER_DIVISIONS_ALL', divisionsString);
 	};
+
 
 	return (
 		<ArmyContext.Provider

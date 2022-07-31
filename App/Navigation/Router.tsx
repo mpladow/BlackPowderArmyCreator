@@ -6,7 +6,7 @@ import {
 	DefaultTheme,
 	DarkTheme,
 } from '@react-navigation/native';
-import MainTabs from './MainTabs';
+import MainTabs from '../Screens/Main/MainTabs';
 import DrawerPages from './DrawerPages';
 import Settings from '../Profile/Settings';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -20,9 +20,10 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ReferenceProvider from '../Contexts/ReferenceContext';
 import ListCreatorHome from '../Screens/Main/ListCreator/ListCreatorHome';
 import Prototype from '../Debug/Prototype';
-import Reference from '../Screens/Reference/Reference';
+import Reference from '../Screens/Main/Reference/Reference';
 import RulesProvider from '../Contexts/RulesContext';
 import CreatorProvider from '../Contexts/ArmyListCreator/CreatorContext';
+import Container from '../Components/Atoms/Container';
 
 const Router = () => {
 	const RootStack = createNativeStackNavigator();

@@ -13,8 +13,11 @@ const Container = (props) => {
 export default Container
 
 const styles = StyleSheet.create({
-    container: {
-        padding: commonStyles.padding, 
-        marginVertical: commonStyles.margin
-    }
-})
+	container: {
+		flex: 1,
+		// flexDirection: 'column',
+		// alignItems: 'center',
+		justifyContent: 'flex-start',
+		width: '100%',
+	},
+});

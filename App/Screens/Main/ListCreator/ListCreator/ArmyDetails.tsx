@@ -104,7 +104,6 @@ const ArmyDetails = ({ route, edit }) => {
 			</View>
 		);
 	};
-
 	const onEditDivisionPress = (divisionId: number) => {
 		console.log(divisionId, 'div id');
 		nav.navigate('EditDivision', {

@@ -1,6 +1,6 @@
 import { StyleSheet, View, Pressable } from 'react-native'
 import React from 'react'
-import Text from '../../../Components/Atoms/Text';
+import Text from '../../../../Components/Atoms/Text';
 
 const ReferenceListItem = ({name, onPress, icon}) => {
   return (
