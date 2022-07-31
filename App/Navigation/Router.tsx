@@ -23,6 +23,7 @@ import Prototype from '../Debug/Prototype';
 import Reference from '../Screens/Main/Reference/Reference';
 import RulesProvider from '../Contexts/RulesContext';
 import CreatorProvider from '../Contexts/ArmyListCreator/CreatorContext';
+import Container from '../Components/Atoms/Container';
 
 const Router = () => {
 	const RootStack = createNativeStackNavigator();

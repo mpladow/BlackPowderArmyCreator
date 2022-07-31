@@ -27,39 +27,27 @@ const EditArmy = (props) => {
 		formState: { errors, isDirty, isValid },
 	} = useForm({
 		defaultValues: {
-			ArmyId: 0,
-			ArmyName: '',
-			ArmyNotes: '',
+			DivisionId: 0,
+			DivisionName: '',
+			DivisionNotes: '',
 			EraTemplateId: 1,
 		},
 	});
 
 	useEffect(() => {
-		if (props.route.params.ArmyId) {
-			let id = props.route.params.ArmyId;
-			setValue('ArmyId', id);
-			let army = armyContext.getArmyById(id);
-			setValue('ArmyName', army.ArmyName);
-			setValue('ArmyNotes', army.ArmyNotes);
+		if (props.route.params.DivisionId) {
+			let id = props.route.params.DivisionId;
+			setValue('DivisionId', id);
+			let army = armyContext.getDivisionById(id);
+			setValue('DivisionName', army.DivisionName);
+			setValue('DivisionNotes', army.DivisionNotes);
 			setValue('EraTemplateId', army.EraTemplateId);
 			setButtonLabel('Save Changes');
 		} else {
-			if (!armyContext.focusedArmy) {
-				setValue(
-					'ArmyName',
-					armyContext.focusedArmy?.ArmyName
-				);
-				setValue(
-					'ArmyNotes',
-					armyContext.focusedArmy?.ArmyNotes
-				);
-				setValue(
-					'EraTemplateId',
-					armyContext.focusedArmy?.EraTemplateId
-				);
-				setButtonLabel('Save Changes');
+			
+				setButtonLabel('Create Division');
 			}
-		}
+		
 
 		setEraDropdown(creatorContext.getEraDropdown);
 	}, []);
@@ -68,32 +56,32 @@ const EditArmy = (props) => {
 		// prompt cancel if form is dirty
 		nav.goBack();
 	};
-	const onSubmitHandler = async (data: Army) => {
+	const onSubmitHandler = async (data: Division) => {
 		console.log(data, 'DATA');
 
-		if (data.ArmyId == 0) {
+		if (data.DivisionId == 0) {
 			console.log('ADDING ARMY');
 			//add
-			data.ArmyId = Math.random() * 1000;
-			setValue('ArmyId', data.ArmyId);
+			data.DivisionId = Math.random() * 1000;
+			setValue('DivisionId', data.DivisionId);
 
 			// save army
-			armyContext.addArmy(data);
+			armyContext.addDivision(data);
 		} else {
 			console.log('EDITING ARMY');
 			//edit
-			armyContext.editArmy(data);
+			armyContext.editDivision(data);
 		}
 		setTimeout(() => {
 			nav.navigate('ArmyDetails', {
-				ArmyId: getValues('ArmyId'),
+				DivisionId: getValues('DivisionId'),
 			});
 		}, 1000);
 	};
 
 	const onErrorHandler = (error) => {
 		console.log(error, 'ERROR');
-		console.log(errors.ArmyName, 'All errors');
+		console.log(errors.DivisionName, 'All errors');
 	};
 
 	return (
@@ -114,10 +102,10 @@ const EditArmy = (props) => {
 							},
 						}) => (
 							<InputField
-								labelName='Army Name'
+								labelName='Division Name'
 								value={value}
 								errors={
-									errors.ArmyName
+									errors.DivisionName
 								}
 								placeholder={
 									'e.g., 1st Div, 2nd Div'
@@ -127,10 +115,10 @@ const EditArmy = (props) => {
 								}
 							/>
 						)}
-						name={'ArmyName'}
+						name={'DivisionName'}
 						control={control}
 						rules={{
-							required: 'An army name is required',
+							required: 'A division name is required',
 						}}
 					/>
 					<Controller
@@ -142,7 +130,7 @@ const EditArmy = (props) => {
 							},
 						}) => (
 							<InputField
-								labelName='Army Notes'
+								labelName='Division Notes'
 								value={value}
 								placeholder={
 									'e.g., French 1812, British Waterloo'
@@ -160,7 +148,7 @@ const EditArmy = (props) => {
 								}}
 							/>
 						)}
-						name={'ArmyNotes'}
+						name={'DivisionNotes'}
 						control={control}
 					/>
 				</Card>

@@ -11,27 +11,25 @@ const ModalArmyOptions = ({ id, onClosePress, showModal }) => {
 	const armyContext = useArmyContext();
 
 	const onEditPress = () => {
-		nav.navigate('EditArmy', { ArmyId: id });
+		nav.navigate('EditArmy', { DivisionId: id });
 	};
 	const onDeletePress = () => {
 		console.log(id, 'ID');
 		return Alert.alert(
-			'Delete Army',
+			'Delete Division',
 			`Are you sure you want to delete this army of id ${id}?`,
 			[
 				{
 					text: 'Delete',
 					onPress: () => {
 						onClosePress();
-						armyContext.deleteArmy(id);
-						armyContext.removeFocus();
+						armyContext.deleteDivision(id);
 					},
 				},
 				{
 					text: 'Cancel',
 					onPress: () => {
 						onClosePress();
-						armyContext.removeFocus();
 					},
 				},
 			]
@@ -59,7 +57,7 @@ const ModalArmyOptions = ({ id, onClosePress, showModal }) => {
 							type='primary'
 							onPress={onEditPress}
 						>
-							Edit Army
+							Edit Division
 						</Button>
 					</View>
 					<View style={{ marginTop: 16 }}>

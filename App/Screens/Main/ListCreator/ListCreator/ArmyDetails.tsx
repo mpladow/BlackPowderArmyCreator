@@ -28,25 +28,22 @@ const ArmyDetails = ({ route, edit }) => {
 	const nav = useNavigation();
 	const armyContext = useArmyContext();
 	const theme = useTheme();
-	const [focusedArmy, setFocusedArmy] = useState({} as Army);
-	const [focusedArmyDivisions, setFocusedArmyDivisions] = useState(
-		[] as Division[]
-	);
+	const [focusedDivision, setFocusedDivision] = useState({} as Division);
 	const [armyId, setArmyId] = useState(0 as number);
 
-	useEffect(() => {
-		const unsubscribe = nav.addListener('focus', () => {
-			if (route.params && route.params?.ArmyId) {
-				let _id = route.params.ArmyId;
-				setArmyId(_id);
-				let _army = armyContext.getArmyById(_id);
-				setFocusedArmy(_army);
-			}
-		});
 
+	useEffect(() => {
+			if (route.params && route.params?.DivisionId) {
+				let _id = route.params.DivisionId;
+				let _army = armyContext.getDivisionById(_id);
+				console.log(_army, 'retruning army');
+				setFocusedDivision(_army); 
+			}
+			else{ 
+				console.log('dfdf')
+			}
 		// Return the function to unsubscribe from the event so it gets removed on unmount
-		return unsubscribe;
-	}, [nav]);
+	}, []);
 
 	// useEffect(() => {
 	// 	if (route.params && route.params?.ArmyId) {
@@ -57,30 +54,16 @@ const ArmyDetails = ({ route, edit }) => {
 	// 		setFocusedArmy(_army);
 	// 	}
 	// }, []);
-	useEffect(() => {
-		// get all divisions
-		let _divisions = armyContext.getDivisionsById(armyId);
-		setFocusedArmyDivisions(_divisions);
-	}, [focusedArmy]);
 
-	useEffect(() => {
-		if (focusedArmy) {
-			let _divisions = armyContext.getDivisionsById(
-				focusedArmy.ArmyId
-			);
 
-			setFocusedArmyDivisions(_divisions);
-		} else {
-			console.log('NOT FOUND');
-		}
-	}, [armyContext.divisions]);
+
 
 	useEffect(() => {
 		nav.setOptions({
-			headerTitle: armyContext.focusedArmy?.ArmyName,
-			title: armyContext.focusedArmy?.ArmyName,
+			headerTitle: focusedDivision.DivisionName,
+			title: focusedDivision.DivisionName,
 		});
-	}, [focusedArmy]);
+	}, [focusedDivision]);
 
 	useLayoutEffect(() => {
 		nav.setOptions({
@@ -94,7 +77,7 @@ const ArmyDetails = ({ route, edit }) => {
 		});
 	}, [nav, editMode]);
 
-	const renderDivisionCommanderDetails = (division) => {
+	const renderDivisionCommanderDetails = () => {
 		return (
 			<View
 				style={{
@@ -107,12 +90,9 @@ const ArmyDetails = ({ route, edit }) => {
 					size={18}
 					color='yellow'
 				/>
-				{division.Commander ? (
+				{focusedDivision.Commander ? (
 					<Text>
-						{
-							division.Commander
-								.DivisionCommanderName
-						}
+						{`${focusedDivision.Commander.CommanderRank} ${focusedDivision.Commander.CommanderFirstName} ${focusedDivision.Commander.CommanderSurname}`}
 					</Text>
 				) : (
 					<Text
@@ -127,104 +107,7 @@ const ArmyDetails = ({ route, edit }) => {
 			</View>
 		);
 	};
-	// const renderBrigadeCommanderDetails = (brigade) => {
-	// 	return (
-	// 		<>
-	// 			{brigade.Commander ? (
-	// 				<>
-	// 					<View
-	// 						style={{
-	// 							flexDirection:
-	// 								'row',
-	// 							paddingVertical: 4,
-	// 						}}
-	// 					>
-	// 						<Entypo
-	// 							name='star-outlined'
-	// 							size={18}
-	// 							color={
-	// 								theme
-	// 									.colors
-	// 									.text
-	// 							}
-	// 						/>
-
-	// 						<Text>
-	// 							{
-	// 								brigade
-	// 									.Commander
-	// 									.BrigadeCommanderName
-	// 							}
-	// 						</Text>
-	// 					</View>
-	// 					<View
-	// 						style={{
-	// 							flexDirection:
-	// 								'row',
-	// 						}}
-	// 					>
-	// 						<Text>
-	// 							Staff Rating:{' '}
-	// 							{
-	// 								brigade
-	// 									.Commander
-	// 									.CR
-	// 							}
-	// 						</Text>
-	// 						<View
-	// 							style={{
-	// 								flexDirection:
-	// 									'row',
-	// 							}}
-	// 						>
-	// 							{brigade.Commander.Traits.map(
-	// 								(
-	// 									x,
-	// 									index
-	// 								) => (
-	// 									<View
-	// 										style={{
-	// 											marginHorizontal: 4,
-	// 										}}
-	// 									>
-	// 										{index !==
-	// 											0 && (
-	// 											<Text>
-	// 												{' '}
-	// 												|{' '}
-	// 											</Text>
-	// 										)}
-	// 										<Text>
-	// 											{
-	// 												x.Name
-	// 											}
-	// 										</Text>
-	// 									</View>
-	// 								)
-	// 							)}
-	// 						</View>
-	// 					</View>
-	// 				</>
-	// 			) : (
-	// 				<View
-	// 					style={{
-	// 						flexDirection: 'row',
-	// 						paddingVertical: 4,
-	// 					}}
-	// 				>
-	// 					<Text
-	// 						style={{
-	// 							color: 'red',
-	// 							fontStyle: 'italic',
-	// 						}}
-	// 					>
-	// 						None Selected
-	// 					</Text>
-	// 				</View>
-	// 			)}
-	// 		</>
-	// 	);
-	// };
+	
 	const onEditDivisionPress = (divisionId: number) => {
 		console.log(divisionId, 'div id');
 		nav.navigate('EditDivision', {
@@ -270,17 +153,16 @@ const ArmyDetails = ({ route, edit }) => {
 	// 	);
 	// };
 
-	const onAddDivisionPress = (id) => {
+	const onAddBrigadePress = (id) => {
 		nav.navigate('EditDivision', {
-			DivisionId: 0,
-			ArmyId: armyId,
+			DivisionId: focusedDivision.DivisionId
 		});
 	};
-	const renderDivisions = () => {
-		if (focusedArmyDivisions?.length > 0) {
+	const renderBrigades = () => {
+		if (focusedDivision.Brigades?.length > 0) {
 			return (
 				<FlatList
-					data={focusedArmyDivisions}
+					data={focusedDivision.Brigades}
 					keyExtractor={(div) =>
 						div.DivisionId?.toString()
 					}
@@ -288,72 +170,29 @@ const ArmyDetails = ({ route, edit }) => {
 						<Card>
 							<View
 								style={{
-									flexDirection:
-										'row',
-								}}
-							>
+									flexDirection: 'row'}}>
 								<View
 									style={{
 										// flex: 1,
-										justifyContent:
-											'center',
-
+										justifyContent:'center',
 										alignItems: 'flex-end',
 									}}
 								>
-									<Heading
-										size={
-											2
-										}
-									>
+									<Heading size={2}>
 										{
 											div
 												.item
-												.DivisionName
+												.BrigadeName
 										}
 									</Heading>
 								</View>
 
-								{editMode && (
-									<View
-										style={{
-											flex: 1,
-											justifyContent:
-												'center',
-											alignItems: 'flex-end',
-										}}
-									>
-										<Pressable
-											onPress={() =>
-												onEditDivisionPress(
-													div
-														.item
-														.DivisionId
-												)
-											}
-										>
-											<EvilIcons
-												name='pencil'
-												size={
-													24
-												}
-												color='red'
-											/>
-										</Pressable>
-									</View>
-								)}
 							</View>
-							{renderDivisionCommanderDetails(
-								div.item
-							)}
+							<View>BRIGADE COMMANDER NAME WIP</View>
 							<FlatList
 								data={
 									div.item
-										.Brigades
-								}
-								key={
-									div.item
-										.Id
+										.Units
 								}
 								renderItem={(
 									brig
@@ -383,7 +222,7 @@ const ArmyDetails = ({ route, edit }) => {
 												{
 													brig
 														.item
-														.BrigadeName
+														.UnitName
 												}
 											</Heading>
 											{editMode && (
@@ -415,65 +254,28 @@ const ArmyDetails = ({ route, edit }) => {
 												</View>
 											)}
 										</View>
-										{renderBrigadeCommanderDetails(
-											brig.item
-										)}
-										<FlatList
-											data={
-												brig
-													.item
-													.Units
-											}
-											renderItem={({
-												item,
-											}) => (
-												<UnitListItem
-													unit={
-														item
-													}
-													onDeletePress={() =>
-														onUnitDeletePress(
-															div
-																.item
-																.DivisionId,
-															brig
-																.item
-																.BrigadeId,
-															item.UnitId
-														)
-													}
-													editMode={
-														editMode
-													}
-												/>
-											)}
-										/>
+
 									</View>
 								)}
-								keyExtractor={(
-									item
-								) => item.id}
 							/>
 						</Card>
 					)}
 				/>
 			);
 		} else {
-			return <Text>No divisions in this army</Text>;
+			return <Text>No brigades in this army</Text>;
 		}
 	};
 
 	return (
 		<Container>
-			{armyContext.focusedArmy?.ArmyId > 0 ? (
+			{focusedDivision?.DivisionId > 0 ? (
 				<>
 					<Text>
-						{
-							armyContext.focusedArmy
-								?.ArmyNotes
-						}
+						{focusedDivision?.DivisionNotes}
 					</Text>
-					<View>{renderDivisions()}</View>
+					{renderDivisionCommanderDetails()}
+					<View>{renderBrigades()}</View>
 					{editMode && (
 						<View
 							style={{
@@ -483,10 +285,10 @@ const ArmyDetails = ({ route, edit }) => {
 							<Button
 								type='primary'
 								onPress={
-									onAddDivisionPress
+									onAddBrigadePress
 								}
 							>
-								Add Division
+								Add Brigade
 							</Button>
 						</View>
 					)}

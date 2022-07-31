@@ -11,25 +11,26 @@ export class Army {
 	public Divisions?: Division[] = [];
 }
 
-export class ArmyVM {
-	public ArmyId: number;
-	public ArmyName: string;
-	public ArmyNotes: string;
-	public DivisionCount: number;
-}
-
 export class Division {
 	public DivisionId: number;
 	public DivisionName: string;
-	public ArmyId: number;
-	public UnitIds?: number[] = [];
-	public Units?: Unit[] = [];
+	public DivisionNotes: string;
+	public EraTemplateId: number;
+	public Brigades?: Brigade[] = [];
 	public Commander?: Commander;
+}
+
+export class Brigade {
+	public BrigadeId: number;
+	public BrigadeName: string;
+	public DivisionId: number;
+	public Commander? : Commander;
+	public Units: Unit[] = [];
 }
 
 export class Unit {
 	UnitId: number;
-	DivisionId: number;
+	BrigadeId: number;
 	UnitName: string;
 	UnitNotes: string;
 	ArmamentId: number;
