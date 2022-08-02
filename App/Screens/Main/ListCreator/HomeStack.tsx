@@ -7,8 +7,10 @@ import Text from '../../../Components/Atoms/Text';
 import ProfileButton from '../../../Profile/ProfileButton';
 import EditArmy from './ListCreator/EditArmy/EditArmy';
 import ArmyDetails from './ListCreator/ArmyDetails';
-import EditDivision from './ListCreator/EditDivision';
-import ListCreatorHome from './ArmyCreatorHome';
+import EditDivision from './ListCreator/EditDivision/EditDivision';
+import ListCreatorHome from './ListCreatorHome';
+import EditBrigade from './ListCreator/EditBrigade/EditBrigade';
+import EditCommander from './ListCreator/EditBrigade/EditCommander';
 
 const HomeStack = () => {
 	const Stack = createNativeStackNavigator();
@@ -23,20 +25,10 @@ const HomeStack = () => {
 					fontFamily: 'NotoSans_700Bold',
 					fontSize: 18,
 				},
-				headerRight: () => (
-					<ProfileButton
-						onPress={() =>
-							nav.navigate('Settings')
-						}
-					/>
-				),
+				headerRight: () => <ProfileButton onPress={() => nav.navigate('Settings')} />,
 			}}
 		>
-			<Stack.Screen
-				name='ListCreatorHome'
-				options={{ headerTitle: 'BP Companion' }}
-				component={ListCreatorHome}
-			/>
+			<Stack.Screen name='ListCreatorHome' options={{ headerTitle: 'BP Companion' }} component={ListCreatorHome} />
 			<Stack.Screen
 				name='EditArmy'
 				options={{
@@ -52,6 +44,19 @@ const HomeStack = () => {
 					presentation: 'modal',
 				}}
 				component={EditDivision}
+			/>
+			<Stack.Screen
+				name='EditBrigade'
+				options={{
+					headerTitle: 'BrigadeDetails',
+					presentation: 'modal',
+				}}
+				component={EditBrigade}
+			/>
+			<Stack.Screen
+			name='EditCommander'
+			options={{headerTitle: 'Edit Commander', presentation: 'modal'}}
+			component={EditCommander}
 			/>
 			<Stack.Screen
 				name='ArmyDetails'

@@ -1,12 +1,33 @@
 import { createContext, useEffect, useState, useContext, useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Armament, Army, Brigade, Division, EraTemplate, SpecialRule, Unit, UnitTemplate, UnitType } from '../../Models/ArmyCreator';
+import { Armament, Army, Brigade, Commander, Division, EraTemplate, SpecialRule, Unit, UnitTemplate, UnitType } from '../../Models/ArmyCreator';
+import uuid from 'react-native-uuid';
 
-const ArmyContext = createContext(undefined);
+interface ArmyContextInterface {
+	divisions: Division[];
+	deleteDivision;
+	getDivisionById;
+	getBrigadeById;
+	addDivision;
+	editDivision;
+	currentCommander: Commander;
+	setCurrentCommander;
+	currentDivision: Division;
+	setCurrentDivision;
+	currentBrigade: Brigade;
+	setCurrentBrigade;
+	addBrigade;
+}
+const ArmyContext = createContext<ArmyContextInterface>(undefined);
 const ArmyProvider = ({ children }) => {
 	// Manage theme state
 	const [divisions, setDivisions] = useState([] as Division[]);
+
+	const [currentCommander, setCurrentCommander] = useState(undefined as Commander);
+
+	const [currentDivision, setCurrentDivision] = useState(undefined as Division)
+	const [currentBrigade, setCurrentBrigade] = useState(undefined as Brigade)
 
 	useEffect(() => {
 		// AsyncStorage.removeItem('USER_DIVISIONS_ALL');
@@ -28,17 +49,26 @@ const ArmyProvider = ({ children }) => {
 		let _div = divisions.find((x) => x.DivisionId == id);
 		console.log(_div, 'dov');
 		console.log(id, 'id');
+		setCurrentDivision(_div);
 		return _div;
 	};
 
 	const getBrigadeById = (id, divisionId) => {
-		let _brigade = divisions.find((x) => x.Brigades);
+		let _division = divisions.find((x) => x.DivisionId == divisionId);
+		let _brigade = _division.Brigades.find((x) => x.BrigadeId == id)
+		setCurrentBrigade(_brigade);
 	};
 
 	const addBrigade = (newBrigade: Brigade) => {
 		let division = divisions.find((x) => x.DivisionId == newBrigade.DivisionId);
+		console.log(newBrigade);
+
+		newBrigade.BrigadeId = uuid.v4.toString();
 		let updatedBrigs = [...division.Brigades, newBrigade];
 		division.Brigades = updatedBrigs;
+		// set as focused brigade
+		
+
 	};
 
 	const editBrigade = (newBrigade) => {};
@@ -89,6 +119,13 @@ const ArmyProvider = ({ children }) => {
 				getBrigadeById,
 				addDivision,
 				editDivision,
+				currentCommander,
+				setCurrentCommander,
+				currentDivision,
+				setCurrentDivision,
+				currentBrigade,
+				setCurrentBrigade,
+				addBrigade,
 			}}
 		>
 			{children}

@@ -21,7 +21,7 @@ export class Division {
 }
 
 export class Brigade {
-	public BrigadeId: number;
+	public BrigadeId: string;
 	public BrigadeName: string;
 	public DivisionId: number;
 	public Commander? : Commander;
@@ -105,12 +105,11 @@ IsCustom: boolean;
 export class Commander {
 	public CommanderId: number;
 	public ArmyId: number;
-	public CommandRating: number;
+	public CommanderStaffRating: number;
 	public CommanderFirstName: string;
 	public CommanderSurname: string;
 	public CommanderRank: string;
 	public TraitIds: [] = [];
-
 }
 
 export class Trait {

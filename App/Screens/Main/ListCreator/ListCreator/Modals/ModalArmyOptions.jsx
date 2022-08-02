@@ -11,6 +11,7 @@ const ModalArmyOptions = ({ id, onClosePress, showModal }) => {
 	const armyContext = useArmyContext();
 
 	const onEditPress = () => {
+		onClosePress();
 		nav.navigate('EditArmy', { DivisionId: id });
 	};
 	const onDeletePress = () => {

@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 8 * 2,
 		alignItems: 'center',
 		borderRadius: 16,
+		marginBottom: 8
 	},
 	backgroundPrimary: {
 		backgroundColor: 'green',

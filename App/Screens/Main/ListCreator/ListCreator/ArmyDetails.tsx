@@ -18,7 +18,6 @@ import { useTheme } from '@react-navigation/native';
 import { Ionicons, Entypo, EvilIcons } from '@expo/vector-icons';
 import Heading from '../../../../Components/Atoms/Heading';
 import { Army, Division } from '../../../../Models/ArmyCreator';
-import UnitListItem from './EditUnit/UnitListItem';
 
 const ArmyDetails = ({ route, edit }) => {
 	// states that will hold army indivisula army details for each section

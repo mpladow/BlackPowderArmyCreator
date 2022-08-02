@@ -1,16 +1,19 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import CustomModal from '../../../../../Components/Atoms/ModalCustom';
+import { Pressable, StyleSheet, Touchable, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import ModalCustom from '../../../../../Components/Atoms/ModalCustom';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Button from '../../../../../Components/Atoms/Button';
 import Card from '../../../../../Components/Atoms/Card';
 import InputField from '../../../../../Components/Atoms/InputField';
 import { Controller, useForm } from 'react-hook-form';
 import { Commander } from '../../../../../Models/ArmyCreator';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 import { useArmyContext } from '../../../../../Contexts/ArmyListCreator/ArmyContext';
+import { Picker } from '@react-native-picker/picker';
+import { useTheme, useNavigation } from '@react-navigation/native';
+import Text from '../../../../../Components/Atoms/Text';
+import Container from '../../../../../Components/Atoms/Container';
+import uuid from 'react-native-uuid';
 
 const EditBrigade = ({ route }) => {
 	const {
@@ -18,6 +21,8 @@ const EditBrigade = ({ route }) => {
 		handleSubmit,
 		setValue,
 		getValues,
+		setError,
+		clearErrors,
 		formState: { errors, isDirty, isValid },
 	} = useForm({
 		defaultValues: {
@@ -27,18 +32,18 @@ const EditBrigade = ({ route }) => {
 			Commander: undefined as Commander,
 		},
 	});
-	const armyContext = useArmyContext();
+	const { currentCommander, setCurrentCommander, getBrigadeById, currentBrigade, setCurrentBrigade, addBrigade } = useArmyContext();
+	const nav = useNavigation();
 
 	const [showCommanderModal, setShowCommanderModal] = useState(false);
-
-	const [currentCommander, setCurrentCommander] = useState({} as Commander);
 	const [saveButtonLabel, setSaveButtonLabel] = useState('Create Brigade');
+	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
 	useEffect(() => {
 		if (route.params && route.params?.BrigadeId && route.params?.DivisionId) {
 			let _brigId = route.params.BrigadeId;
 			let _divId = route.params.DivisionId;
-			let _brigade = armyContext.getBrigadeById(_brigId, _divId);
+			let _brigade = getBrigadeById(_brigId, _divId);
 			console.log(_brigade, 'editing brigade');
 			setValue('BrigadeId', _brigId);
 			setValue('DivisionId', _divId);
@@ -47,25 +52,53 @@ const EditBrigade = ({ route }) => {
 			console.log('dfdf');
 		}
 	}, []);
+	useEffect(() => {
+		console.log(currentCommander, 'SET NEW COMMANDER');
+		setValue('Commander', currentCommander);
+		clearErrors('Commander.CommanderId');
+	}, [currentCommander]);
 
 	const onSelectBrigCommanderPress = () => {
-		setShowCommanderModal(!showCommanderModal);
+		// setShowCommanderModal(!showCommanderModal);
+		nav.navigate('EditCommander');
 		//
 	};
 
-	const onSubmitHandler = () => {
-		
+	const onSubmitHandler = (data) => {
+		console.log(data, 'create or save new brigade')
+		// if no id exists, create a new brigade, set current brigade,
+		if (data.Commander == undefined) {
+			setError('Commander.CommanderId', { message: 'You must select a commander' });
+		}
+		if (data.BrigadeId == '') {
+			// save and add brigade and commander details
+			addBrigade(data);
+		}else{
+// updateBrigade();
+		}
+		// else update brigade and all units
 	};
 
-	const onErrorHandler = () => {};
+	const onErrorHandler = (data) => {
+		console.log(data);
+		if (getValues('Commander') == undefined) {
+			setError('Commander.CommanderId', { message: 'You must select a commander' });
+		} 
+	};
 
 	const onCancelPress = () => {
 		setShowCommanderModal(false);
 	};
+	const onRemoveCommanderPress = () => {
+		setShowConfirmationModal(false);
+		console.log('remove commer');
+		setCurrentCommander(undefined);
+		setValue('Commander', undefined);
+	};
 
 	return (
-		<KeyboardAwareScrollView>
-			<View style={{ margin: 16}}>
+		<Container>
+			<View style={{ margin: 16 }}>
 				<Card>
 					<Controller
 						render={({ field: { onChange, onBlur, value } }) => (
@@ -87,52 +120,71 @@ const EditBrigade = ({ route }) => {
 			</View>
 			<View style={{ padding: 16 }}>
 				<View>
-					{getValues('Commander') === undefined ? (
+					{currentCommander == undefined ? (
 						<Button onPress={onSelectBrigCommanderPress}>Select Commander</Button>
 					) : (
-						<View>
-							<Text>
-								{getValues('Commander').CommandRating} {getValues('Commander').CommanderSurname}
-							</Text>
-							<TouchableOpacity>
-								<FontAwesome name='times' size={24} color='red' />
-							</TouchableOpacity>
+						<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
+							<Text style={{ fontSize: 16 }}>SR: {currentCommander.CommanderStaffRating}</Text>
+							<Text>Gen. {currentCommander.CommanderFirstName}</Text>
+							<View style={{ alignItems: 'flex-end' }}>
+								<Pressable onPress={() => setShowConfirmationModal(true)} style={{ padding: 8 }}>
+									<FontAwesome name='times' size={24} color='red' />
+								</Pressable>
+							</View>
 						</View>
 					)}
+					{errors?.Commander?.CommanderId && <Text>{errors?.Commander?.CommanderId.message}</Text>}
 				</View>
-				<View
-					style={{
-						flex: 1,
-						flexDirection: 'column',
-						justifyContent: 'space-between',
-					}}
-				>
-					<View style={{ marginTop: 16 }}>
-						<Button
-							type='primary'
-							// disabled={
-							// 	isDirty
-							// 		? false
-							// 		: true
-							// }
-							onPress={handleSubmit(onSubmitHandler, onErrorHandler)}
-						>
-							{saveButtonLabel}
+				{currentBrigade != undefined ? (
+					<>
+						<FlatList
+							data={currentBrigade.Units}
+							renderItem={({ item, index }) => (
+								<View>
+									<Text>{item.UnitName}</Text>
+								</View>
+							)}
+						/>
+						<Button type='default' onPress={() => console.log('ADD UNIT')}>
+							Add Unit
 						</Button>
-					</View>
-					<View style={{ marginTop: 16 }}>
-						<Button type='cancel' onPress={onCancelPress}>
-							Cancel
-						</Button>
-					</View>
+					</>
+				) : null}
+
+				<View style={{ marginTop: 16 }}>
+					<Button
+						type='primary'
+						// disabled={
+						// 	isDirty
+						// 		? false
+						// 		: true
+						// }
+						onPress={handleSubmit(onSubmitHandler, onErrorHandler)}
+					>
+						{saveButtonLabel}
+					</Button>
+					<Button type='cancel' onPress={onCancelPress}>
+						Cancel
+					</Button>
 				</View>
 			</View>
+
 			<ModalCustom
-				toggleModalVisible={() => setShowCommanderModal(!showCommanderModal)}
-				showModal={showCommanderModal}
-				heading={'Select Commander'}
-			></ModalCustom>
-		</KeyboardAwareScrollView>
+				toggleModalVisible={() => setShowConfirmationModal(!showCommanderModal)}
+				showModal={showConfirmationModal}
+				heading={'Remove Commander'}
+			>
+				<View>
+					<Text>Are you sure you want to remove {currentCommander?.CommanderFirstName} from command?</Text>
+					<Button type='danger' onPress={() => onRemoveCommanderPress()}>
+						Remove
+					</Button>
+					<Button type='cancel' onPress={() => setShowConfirmationModal(false)}>
+						Cancel
+					</Button>
+				</View>
+			</ModalCustom>
+		</Container>
 	);
 };
 

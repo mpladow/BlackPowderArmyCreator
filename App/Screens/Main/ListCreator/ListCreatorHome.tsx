@@ -1,12 +1,4 @@
-import {
-	StyleSheet,
-	View,
-	FlatList,
-	Modal,
-	Alert,
-	Pressable,
-	ListRenderItemInfo,
-} from 'react-native';
+import { StyleSheet, View, FlatList, Modal, Alert, Pressable, ListRenderItemInfo } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import ListItem from '../../../Components/Atoms/ListItem';
 import Button from '../../../Components/Atoms/Button';
@@ -29,7 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ListCreatorHome = () => {
 	const [showArmyModal, setShowArmyModal] = useState(false);
-const [armySummaries, setArmySummaries] = useState([] as Division[])
+	const [armySummaries, setArmySummaries] = useState([] as Division[]);
 
 	const {
 		control,
@@ -41,18 +33,16 @@ const [armySummaries, setArmySummaries] = useState([] as Division[])
 	const armyContext = useArmyContext();
 
 	useEffect(() => {
-	  let allDivisions = armyContext.divisions;
-setArmySummaries(allDivisions)
-	}, [])
-	
-
+		let allDivisions = armyContext.divisions;
+		setArmySummaries(allDivisions);
+	}, []);
 
 	const addDivisionHandler = () => {
 		// open up a modal to add a new army
 		nav.navigate('EditArmy', { id: null });
 	};
 	const onDivisionListItemPressHandler = (id) => {
-		nav.navigate('ArmyDetails', {DivisionId: id });
+		nav.navigate('ArmyDetails', { DivisionId: id });
 	};
 	return (
 		<>
@@ -63,36 +53,21 @@ setArmySummaries(allDivisions)
 						<View
 							style={{
 								borderBottomWidth: 1,
-								borderColor:
-									'#000',
+								borderColor: '#000',
 								paddingHorizontal: 20,
 								paddingVertical: 10,
 							}}
 						>
-							<Heading size={2}>
-								All Divisions
-							</Heading>
+							<Heading size={2}>All Divisions</Heading>
 						</View>
 					)}
-					ItemSeparatorComponent={() => (
-						<ListItemSpacer />
-					)}
-					renderItem={({
-						item,
-					}: ListRenderItemInfo<Division>) => (
+					ItemSeparatorComponent={() => <ListItemSpacer />}
+					renderItem={({ item }: ListRenderItemInfo<Division>) => (
 						<ListItem
 							id={item.DivisionId}
-							title={
-								item.DivisionName
-							}
-							description={
-								item.DivisionNotes
-							}
-							onPress={() =>
-								onDivisionListItemPressHandler(
-									item.DivisionId
-								)
-							}
+							title={item.DivisionName}
+							description={item.DivisionNotes}
+							onPress={() => onDivisionListItemPressHandler(item.DivisionId)}
 						/>
 					)}
 					// keyExtractor={(item) =>
@@ -101,62 +76,30 @@ setArmySummaries(allDivisions)
 				/>
 				<View>
 					<ButtonContainer>
-						<Button
-							type='primary'
-							onPress={
-								addDivisionHandler
-							}
-						>
+						<Button type='primary' onPress={addDivisionHandler}>
 							Add Army
 						</Button>
 					</ButtonContainer>
 				</View>
 			</Container>
-			<CustomModal
-				heading='Create Division'
-				toggleModalVisible={() =>
-					setShowArmyModal(!showArmyModal)
-				}
-				showModal={showArmyModal}
-			>
+			<CustomModal heading='Create Division' toggleModalVisible={() => setShowArmyModal(!showArmyModal)} showModal={showArmyModal}>
 				<KeyboardAwareScrollView>
 					<View style={styles.modalContent}>
 						<Controller
 							control={control}
 							name='Name'
-							render={({
-								field: {
-									onChange,
-									value,
-									onBlur,
-								},
-							}) => (
+							render={({ field: { onChange, value, onBlur } }) => (
 								<InputField
 									label='Division Name'
 									placeholder='i.e., French I Division V Corps'
-									value={
-										value
-									}
-									onChange={(
-										val
-									) =>
-										onChange(
-											val
-										)
-									}
+									value={value}
+									onChange={(val) => onChange(val)}
 								/>
 							)}
 						/>
 					</View>
 					<View style={styles.modalFooter}>
-						<Button
-							type='primary'
-							onPress={() =>
-								setShowArmyModal(
-									false
-								)
-							}
-						>
+						<Button type='primary' onPress={() => setShowArmyModal(false)}>
 							Cancel
 						</Button>
 					</View>
