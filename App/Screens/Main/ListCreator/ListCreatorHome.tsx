@@ -1,5 +1,5 @@
-import { StyleSheet, View, FlatList, Modal, Alert, Pressable, ListRenderItemInfo } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, FlatList, Modal, Alert, Pressable, ListRenderItemInfo, Animated } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import ListItem from '../../../Components/Atoms/ListItem';
 import Button from '../../../Components/Atoms/Button';
 import ButtonContainer from '../../../Components/Atoms/ButtonContainer';
@@ -22,7 +22,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ListCreatorHome = () => {
 	const [showArmyModal, setShowArmyModal] = useState(false);
 	const [armySummaries, setArmySummaries] = useState([] as Division[]);
+	const scale = useRef(new Animated.Value(0));
 
+	const ITEM_HEIGHT = 100;
 	const {
 		control,
 		handleSubmit,
@@ -47,7 +49,7 @@ const ListCreatorHome = () => {
 	return (
 		<>
 			<Container style={{ marginBottom: 150 }}>
-				<FlatList
+				<Animated.FlatList
 					data={armyContext.divisions}
 					ListHeaderComponent={() => (
 						<View
