@@ -2,12 +2,29 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { createContext, useContext, useState } from 'react'
 import { colors } from '../Themes/Styling';
 
-const ThemeContext = createContext(undefined);
+interface IThemeProvider {
+	isDarkTheme: boolean;
+	toggleDarkMode: () => void;
+	LightThemeCustom: ITheme;
+	DarkThemeCustom: ITheme;
+	currentTheme: ITheme;
+}
+const ThemeContext = createContext<IThemeProvider>(undefined);
+
 
 const ThemeProvider = ({ children }) => {
   // Manage theme state
   const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [currentTheme, setCurrentTheme] = useState<ITheme>()
 
+//   useEffect(() => {
+// 	 first
+  
+// 	 return () => {
+// 		second
+// 	 }
+//   }, [third])
+  
   const toggleDarkMode = () => {
 	  console.log(isDarkTheme, 'DARK THEME')
     setIsDarkTheme(!isDarkTheme);
@@ -51,7 +68,19 @@ const ThemeProvider = ({ children }) => {
 // offWhite1: '#222B30',
 // black: '#222B30'
 // }
-const LightThemeCustom = {
+interface IColors {
+	text: string;
+	primary: string;
+	background: string;
+	card: string;
+	border: string;
+	notification: string;
+}
+interface ITheme {
+	dark: boolean;
+	colors: IColors;
+}
+const LightThemeCustom: ITheme = {
   dark: false,
   colors: {
     text: colors.black,
@@ -63,17 +92,17 @@ const LightThemeCustom = {
   }
 }
 
-const DarkThemeCustom = {
-  dark: true,
-  colors: {
-    text: colors.offWhite1,
-    primary: colors.aquaMain,
-    background: colors.black,
-    card: colors.black,
-    border: colors.aquaMain,
-    notification: '#0F7A6C'
-  }
-}
+const DarkThemeCustom: ITheme = {
+	dark: true,
+	colors: {
+		text: colors.offWhite1,
+		primary: colors.aquaMain,
+		background: colors.black,
+		card: colors.black,
+		border: colors.aquaMain,
+		notification: '#0F7A6C',
+	},
+};
 
 
 

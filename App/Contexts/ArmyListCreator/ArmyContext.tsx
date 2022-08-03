@@ -27,7 +27,7 @@ const ArmyProvider = ({ children }) => {
 
 	useEffect(() => {
 		// AsyncStorage.removeItem('USER_ARMIES');
-		//AsyncStorage.removeItem('USER_DIVISIONS');
+		//AsyncStorage.removeItem('USER_DIVISIONS_ALL');
 		getDivisionsFromMemory();
 	}, []);
 	// set armies everytime an army is added/removed/edited to memory

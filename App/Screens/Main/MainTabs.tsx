@@ -57,7 +57,7 @@ const MainTabs = () => {
 				},
 				tabBarShowLabel: false,
 				tabBarActiveTintColor: theme.isDarkTheme
-					? colors.confirmLight
+					? colors.confirmDark
 					: colors.confirmLight,
 				tabBarInactiveTintColor: theme.isDarkTheme
 					? colors.offWhite1
