@@ -26,7 +26,7 @@ const EditDivision = (props) => {
 		handleSubmit,
 		setValue,
 		getValues,
-		formState: { errors },
+		formState: { errors, isSubmitting },
 	} = useForm({
 		defaultValues: {
 			ArmyId: 0,
@@ -35,11 +35,7 @@ const EditDivision = (props) => {
 		},
 	});
 	useEffect(() => {
-		if (
-			props.route &&
-			props.route.params &&
-			props.route.params.DivisionId
-		) {
+		if (props.route && props.route.params && props.route.params.DivisionId) {
 			let _id = props.route.params.DivisionId;
 			let _division = armyContext.getDivisionById(_id);
 			setFocusedDivision(_division);
@@ -60,37 +56,32 @@ const EditDivision = (props) => {
 	const onSubmitHandler = (data: Division) => {
 		setLoading(true);
 
-		if (data.DivisionId == 0) {
-			data.DivisionId = parseFloat(uuid.v4().toString());
-			console.log(data, 'DivisionId new');
-			armyContext.addDivision(data);
+		return new Promise((resolve: any) => {
+			if (data.DivisionId == 0) {
+				data.DivisionId = parseFloat(uuid.v4().toString());
+				armyContext.addDivision(data);
+				resolve();
 
 				nav.dispatch(
 					StackActions.replace('Summary', {
-						DivisionId: getValues(
-							'DivisionId'
-						),
+						DivisionId: getValues('DivisionId'),
 					})
 				);
+			} else {
 
-		} else {
-			console.log(data.DivisionId, 'DivisionId edit');
-
-			armyContext.editDivision(data);
+				armyContext.editDivision(data);
+				resolve();
 
 				nav.dispatch(
 					StackActions.replace('ArmyDetails', {
-						DivisionId: getValues(
-							'DivisionId'
-						),
+						DivisionId: getValues('DivisionId'),
 					})
 				);
 
-
-
 				// nav.navigate('ArmyDetails', {DivisionId: getValues('DivisionId')});
-
-		}
+			}
+			console.log(isSubmitting, 'isSubmitting')
+		})
 
 		setLoading(false);
 	};
@@ -98,7 +89,6 @@ const EditDivision = (props) => {
 	const onErrorHandler = () => {};
 
 	const onCancelPressHandler = () => {
-		armyContext.removeDivisionFocus();
 		nav.goBack();
 	};
 
@@ -107,25 +97,13 @@ const EditDivision = (props) => {
 			<View style={{ margin: 16 }}>
 				<Card>
 					<Controller
-						render={({
-							field: {
-								onChange,
-								onBlur,
-								value,
-							},
-						}) => (
+						render={({ field: { onChange, onBlur, value } }) => (
 							<InputField
 								labelName='Division Name'
 								value={value}
-								errors={
-									errors.DivisionName
-								}
-								placeholder={
-									'e.g., 1st Div, 2nd Div'
-								}
-								onChangeText={
-									onChange
-								}
+								errors={errors.DivisionName}
+								placeholder={'e.g., 1st Div, 2nd Div'}
+								onChangeText={onChange}
 							/>
 						)}
 						name={'DivisionName'}
@@ -143,29 +121,12 @@ const EditDivision = (props) => {
 					}}
 				>
 					<View style={{ marginTop: 16 }}>
-						<Button
-							type='primary'
-							// disabled={
-							// 	isDirty
-							// 		? false
-							// 		: true
-							// }
-							onPress={handleSubmit(
-								onSubmitHandler,
-								onErrorHandler
-							)}
-						>
+						<Button type='primary' disabled={isSubmitting} onPress={handleSubmit(onSubmitHandler, onErrorHandler)}>
 							{buttonLabel}
 						</Button>
 					</View>
 					<View style={{ marginTop: 16 }}>
-						<Button
-							type='cancel'
-							onPress={
-								onCancelPressHandler
-							}
-							disabled={loading}
-						>
+						<Button type='cancel' onPress={onCancelPressHandler} disabled={loading}>
 							Cancel
 						</Button>
 					</View>

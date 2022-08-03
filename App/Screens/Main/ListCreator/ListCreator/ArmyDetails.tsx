@@ -26,9 +26,7 @@ const ArmyDetails = ({ route, edit }) => {
 		if (route.params && route.params?.DivisionId) {
 			let _id = route.params.DivisionId;
 			let _division = armyContext.getDivisionById(_id);
-			console.log(_division, 'retruning army');
 		} else {
-			console.log('dfdf');
 		}
 		// Return the function to unsubscribe from the event so it gets removed on unmount
 	}, []);
@@ -76,7 +74,6 @@ const ArmyDetails = ({ route, edit }) => {
 		);
 	};
 	const onEditDivisionPress = (divisionId: number) => {
-		console.log(divisionId, 'div id');
 		nav.navigate('EditDivision', {
 			DivisionId: divisionId,
 			ArmyId: armyId,
@@ -97,7 +94,6 @@ const ArmyDetails = ({ route, edit }) => {
 		});
 	};
 	const renderBrigades = () => {
-		console.log(armyContext.currentDivision?.Brigades, 'dfdf');
 		if (armyContext.currentDivision.Brigades?.length > 0) {
 			return (
 				<FlatList

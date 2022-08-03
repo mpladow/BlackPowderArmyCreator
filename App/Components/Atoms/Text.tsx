@@ -2,14 +2,19 @@ import { StyleSheet, Text as NativeText, View } from 'react-native';
 import React from 'react';
 import { useThemeContext } from '../../Contexts/ThemeContext';
 
-const Text = (props) => {
+interface IProps {
+bold?: boolean;
+italic?: boolean;
+style?: any;
+}
+const Text: React.FC<IProps> = ({bold, italic, children, style, ...props}) => {
 	const theme = useThemeContext();
 	const getFontFamily = () => {
 		let font = 'Poppins_400Regular';
-		if (props.bold) {
+		if (bold) {
 			font = 'Poppins_600SemiBold';
 		}
-		if (props.italic) {
+		if (italic) {
 			font = 'NotoSans_400Regular_Italic';
 		}
 
@@ -17,17 +22,8 @@ const Text = (props) => {
 	};
 	return (
 		<>
-			<NativeText
-				{...props}
-				style={[
-					getFontFamily(),
-					
-						{color: theme.currentTheme?.colors.text},
-					,
-					props.style,
-				]}
-			>
-				{props.children}
+			<NativeText style={[getFontFamily(), { color: theme.currentTheme?.colors.text }, style]} {...props}>
+				{children}
 			</NativeText>
 		</>
 	);
