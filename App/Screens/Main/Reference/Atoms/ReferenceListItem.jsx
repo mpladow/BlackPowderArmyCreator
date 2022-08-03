@@ -7,7 +7,7 @@ import { LightThemeCustom } from '../../../../Themes/themes';
 const ReferenceListItem = ({name, onPress, icon}) => {
 	const theme = useThemeContext();
   return (
-      <Pressable style={[styles.item, {borderColor: theme.isDarkTheme? theme.DarkThemeCustom.colors.border : theme.LightThemeCustom.colors.border}]} onPress={() => onPress(name)}>
+      <Pressable style={[styles.item, {borderColor: theme.currentTheme.colors.border}]} onPress={() => onPress(name)}>
         <View>
           <Text>{name}</Text>
         </View>
