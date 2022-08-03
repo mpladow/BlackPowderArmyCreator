@@ -1,13 +1,5 @@
-import {
-	StyleSheet,
-	View,
-	FlatList,
-	Modal,
-	Alert,
-	Pressable,
-	ListRenderItemInfo,
-} from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, FlatList, Modal, Alert, Pressable, ListRenderItemInfo, Animated } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import ListItem from '../../../Components/Atoms/ListItem';
 import Button from '../../../Components/Atoms/Button';
 import ButtonContainer from '../../../Components/Atoms/ButtonContainer';
@@ -29,7 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ArmyCreatorHome = () => {
 	const [showArmyModal, setShowArmyModal] = useState(false);
-const [armySummaries, setArmySummaries] = useState([] as Division[])
+	const [armySummaries, setArmySummaries] = useState([] as Division[]);
 
 	const {
 		control,
@@ -40,121 +32,87 @@ const [armySummaries, setArmySummaries] = useState([] as Division[])
 	const nav = useNavigation();
 	const armyContext = useArmyContext();
 
+	const scrollY = useRef(new Animated.Value(0)).current;
+	const MIN_HEIGHT = 80;
+	const SPACING = 8;
 	useEffect(() => {
-	  let allDivisions = armyContext.divisions;
-setArmySummaries(allDivisions)
-	}, [])
-	
-
+		let allDivisions = armyContext.divisions;
+		setArmySummaries(allDivisions);
+	}, []);
 
 	const addDivisionHandler = () => {
 		// open up a modal to add a new army
 		nav.navigate('EditArmy', { id: null });
 	};
 	const onDivisionListItemPressHandler = (id) => {
-		nav.navigate('ArmyDetails', {DivisionId: id });
+		nav.navigate('ArmyDetails', { DivisionId: id });
 	};
 	return (
 		<>
 			<View style={{ flex: 4, marginBottom: 100 }}>
-				<FlatList
+				<Animated.FlatList
 					data={armyContext.divisions}
+					onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
 					ListHeaderComponent={() => (
 						<View
 							style={{
 								borderBottomWidth: 1,
-								borderColor:
-									'#000',
+								borderColor: '#000',
 								paddingHorizontal: 20,
 								paddingVertical: 10,
 							}}
 						>
-							<Heading size={2}>
-								All Divisions
-							</Heading>
+							<Heading size={2}>All Divisions</Heading>
 						</View>
 					)}
-					ItemSeparatorComponent={() => (
-						<ListItemSpacer />
-					)}
-					renderItem={({
-						item,
-					}: ListRenderItemInfo<Division>) => (
-						<ListItem
-							id={item.DivisionId}
-							title={item.DivisionName}
-							description={
-								item.DivisionNotes
-							}
-							onPress={() =>
-								onDivisionListItemPressHandler(
-									item.DivisionId
-								)
-							}
-						/>
-					)}
-					keyExtractor={(item) =>
-						item.DivisionId.toString()
-					}
+					ItemSeparatorComponent={() => <ListItemSpacer />}
+					renderItem={({ item, index }: ListRenderItemInfo<Division>) => {
+						const inputRange = [-1, 0, MIN_HEIGHT * index, MIN_HEIGHT * (index + 2)]; // when the y is anything below the top of the flatlist, it will remain the same (-1)
+						const scale = scrollY.interpolate({
+							inputRange,
+							outputRange: [1, 1, 1, 0],
+						});
+						console.log(scale)
+						return (
+							<ListItem
+								id={item.DivisionId}
+								title={item.DivisionName}
+								description={item.DivisionNotes}
+								onPress={() => onDivisionListItemPressHandler(item.DivisionId)}
+								minHeight={MIN_HEIGHT}
+								margin={SPACING}
+								style={{ opacity: scale }}
+							/>
+						);
+					}}
+					keyExtractor={(item) => item.DivisionId.toString()}
 				/>
 				<View>
 					<ButtonContainer>
-						<Button
-							type='primary'
-							onPress={
-								addDivisionHandler
-							}
-						>
+						<Button type='primary' onPress={addDivisionHandler}>
 							Add Army
 						</Button>
 					</ButtonContainer>
 				</View>
 			</View>
-			<CustomModal
-				heading='Create Division'
-				toggleModalVisible={() =>
-					setShowArmyModal(!showArmyModal)
-				}
-				showModal={showArmyModal}
-			>
+			<CustomModal heading='Create Division' toggleModalVisible={() => setShowArmyModal(!showArmyModal)} showModal={showArmyModal}>
 				<KeyboardAwareScrollView>
 					<View style={styles.modalContent}>
 						<Controller
 							control={control}
 							name='DivisionName'
-							render={({
-								field: {
-									onChange,
-									value,
-									onBlur,
-								},
-							}) => (
+							render={({ field: { onChange, value, onBlur } }) => (
 								<InputField
 									label='Division Name'
 									placeholder='i.e., French I Division V Corps'
-									value={
-										value
-									}
-									onChange={(
-										val
-									) =>
-										onChange(
-											val
-										)
-									}
+									value={value}
+									onChange={(val) => onChange(val)}
 								/>
 							)}
 						/>
 					</View>
 					<View style={styles.modalFooter}>
-						<Button
-							type='primary'
-							onPress={() =>
-								setShowArmyModal(
-									false
-								)
-							}
-						>
+						<Button type='primary' onPress={() => setShowArmyModal(false)}>
 							Cancel
 						</Button>
 					</View>
