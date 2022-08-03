@@ -56,12 +56,8 @@ const MainTabs = () => {
 					fontFamily: 'Poppins_400Regular',
 				},
 				tabBarShowLabel: false,
-				tabBarActiveTintColor: theme.isDarkTheme
-					? colors.confirmDark
-					: colors.confirmLight,
-				tabBarInactiveTintColor: theme.isDarkTheme
-					? colors.offWhite1
-					: theme.LightThemeCustom.offWhite1,
+				tabBarActiveTintColor: theme.currentTheme?.colors.primary,
+				tabBarInactiveTintColor: theme.currentTheme?.colors.text,
 
 				headerShown: false,
 				headerShadowVisible: false,
