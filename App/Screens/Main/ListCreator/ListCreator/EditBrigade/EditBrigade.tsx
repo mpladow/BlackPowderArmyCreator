@@ -5,7 +5,7 @@ import Button from '../../../../../Components/Atoms/Button';
 import Card from '../../../../../Components/Atoms/Card';
 import InputField from '../../../../../Components/Atoms/InputField';
 import { Controller, useForm } from 'react-hook-form';
-import { Commander } from '../../../../../Models/ArmyCreator';
+import { Brigade, Commander } from '../../../../../Models/ArmyCreator';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 import { useArmyContext } from '../../../../../Contexts/ArmyListCreator/ArmyContext';
@@ -32,22 +32,29 @@ const EditBrigade = ({ route }) => {
 			Commander: undefined as Commander,
 		},
 	});
-	const { currentCommander, setCurrentCommander, getBrigadeById, currentBrigade, setCurrentBrigade, addBrigade } = useArmyContext();
+	const { currentCommander, setCurrentCommander, getBrigadeById, currentBrigade, setCurrentBrigade, addBrigade, updateBrigade, currentDivision } =
+		useArmyContext();
 	const nav = useNavigation();
 
-	const [showCommanderModal, setShowCommanderModal] = useState(false);
 	const [saveButtonLabel, setSaveButtonLabel] = useState('Create Brigade');
 	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
+	// include an menu option 
 	useEffect(() => {
-		if (route.params && route.params?.BrigadeId && route.params?.DivisionId) {
+		nav.setOptions({
+			headerRight: () => null,
+		});
+	}, []);
+	useEffect(() => {
+		if (route.params && route.params?.BrigadeId) {
 			let _brigId = route.params.BrigadeId;
-			let _divId = route.params.DivisionId;
-			let _brigade = getBrigadeById(_brigId, _divId);
+			let _divId = currentDivision.DivisionId;
+			let _brigade: Brigade = getBrigadeById(_brigId, _divId);
 			console.log(_brigade, 'editing brigade');
 			setValue('BrigadeId', _brigId);
 			setValue('DivisionId', _divId);
-			setValue('BrigadeName', _brigade.name);
+			setValue('BrigadeName', _brigade.BrigadeName);
+			setSaveButtonLabel('Save Changes');
 		} else {
 			console.log('dfdf');
 		}
@@ -65,7 +72,7 @@ const EditBrigade = ({ route }) => {
 	};
 
 	const onSubmitHandler = (data) => {
-		console.log(data, 'create or save new brigade')
+		console.log(data, 'create or save new brigade');
 		// if no id exists, create a new brigade, set current brigade,
 		if (data.Commander == undefined) {
 			setError('Commander.CommanderId', { message: 'You must select a commander' });
@@ -73,9 +80,10 @@ const EditBrigade = ({ route }) => {
 		if (data.BrigadeId == '') {
 			// save and add brigade and commander details
 			addBrigade(data);
-		}else{
-// updateBrigade();
+		} else {
+			updateBrigade(data);
 		}
+		nav.goBack();
 		// else update brigade and all units
 	};
 
@@ -83,11 +91,11 @@ const EditBrigade = ({ route }) => {
 		console.log(data);
 		if (getValues('Commander') == undefined) {
 			setError('Commander.CommanderId', { message: 'You must select a commander' });
-		} 
+		}
 	};
 
 	const onCancelPress = () => {
-		setShowCommanderModal(false);
+		nav.goBack();
 	};
 	const onRemoveCommanderPress = () => {
 		setShowConfirmationModal(false);
@@ -170,7 +178,7 @@ const EditBrigade = ({ route }) => {
 			</View>
 
 			<ModalCustom
-				toggleModalVisible={() => setShowConfirmationModal(!showCommanderModal)}
+				toggleModalVisible={() => setShowConfirmationModal(!showConfirmationModal)}
 				showModal={showConfirmationModal}
 				heading={'Remove Commander'}
 			>
