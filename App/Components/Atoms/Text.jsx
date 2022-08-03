@@ -1,9 +1,9 @@
 import { StyleSheet, Text as NativeText, View } from 'react-native';
 import React from 'react';
-import { useTheme } from '@react-navigation/native';
+import { useThemeContext } from '../../Contexts/ThemeContext';
 
 const Text = (props) => {
-	const theme = useTheme();
+	const theme = useThemeContext();
 	const getFontFamily = () => {
 		let font = 'Poppins_400Regular';
 		if (props.bold) {
@@ -22,7 +22,7 @@ const Text = (props) => {
 				style={[
 					getFontFamily(),
 					
-						{color: theme.colors.text},
+						{color: theme.currentTheme?.colors.text},
 					,
 					props.style,
 				]}

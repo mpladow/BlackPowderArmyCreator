@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: "center",
-    marginTop: 22,
     paddingHorizontal: 4,
+	 backgroundColor: 'rgba(0,0,0,0.5)'
   },
   modalLight: {
     backgroundColor: colors.offWhite1,

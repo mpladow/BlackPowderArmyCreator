@@ -34,6 +34,9 @@ const ListCreatorHome = () => {
 	const nav = useNavigation();
 	const armyContext = useArmyContext();
 
+	const scrollY = useRef(new Animated.Value(0)).current;
+	const MIN_HEIGHT = 80;
+	const SPACING = 8;
 	useEffect(() => {
 		let allDivisions = armyContext.divisions;
 		setArmySummaries(allDivisions);
@@ -48,9 +51,15 @@ const ListCreatorHome = () => {
 	};
 	return (
 		<>
-			<Container style={{ marginBottom: 150 }}>
+			<Container style={{ flex: 4, marginBottom: 100 }}>
 				<Animated.FlatList
 					data={armyContext.divisions}
+					onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: true })}
+					ListEmptyComponent= {() => (
+						<View>
+							<Text>You have no divisions at the present time</Text>
+						</View>
+					)}
 					ListHeaderComponent={() => (
 						<View
 							style={{
@@ -64,17 +73,26 @@ const ListCreatorHome = () => {
 						</View>
 					)}
 					ItemSeparatorComponent={() => <ListItemSpacer />}
-					renderItem={({ item }: ListRenderItemInfo<Division>) => (
-						<ListItem
-							id={item.DivisionId}
-							title={item.DivisionName}
-							description={item.DivisionNotes}
-							onPress={() => onDivisionListItemPressHandler(item.DivisionId)}
-						/>
-					)}
-					// keyExtractor={(item) =>
-					// 	item.DivisionId.toString()
-					// }
+					renderItem={({ item, index }: ListRenderItemInfo<Division>) => {
+						const inputRange = [-1, 0, MIN_HEIGHT * index, MIN_HEIGHT * (index + 2)]; // when the y is anything below the top of the flatlist, it will remain the same (-1)
+						const scale = scrollY.interpolate({
+							inputRange,
+							outputRange: [1, 1, 1, 0],
+						});
+						console.log(scale)
+						return (
+							<ListItem
+								id={item.DivisionId}
+								title={item.DivisionName}
+								description={item.DivisionNotes}
+								onPress={() => onDivisionListItemPressHandler(item.DivisionId)}
+								minHeight={MIN_HEIGHT}
+								margin={SPACING}
+								style={{ opacity: scale }}
+							/>
+						);
+					}}
+					keyExtractor={(item) => item.DivisionId.toString()}
 				/>
 				<View>
 					<ButtonContainer>
@@ -107,7 +125,7 @@ const ListCreatorHome = () => {
 					</View>
 				</KeyboardAwareScrollView>
 			</CustomModal>
-		</>
+		</> 
 	);
 };
 

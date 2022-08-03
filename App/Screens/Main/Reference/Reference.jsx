@@ -91,12 +91,13 @@ const Reference = () => {
 				</Text>
 			</View>
 				<FlatList
+				numColumns={2}
+				snapToAlignment='start'
+				snapToInterval={150}
 					// stickyHeaderIndices={[1]}
 					keyExtractor={(item) => item.id.toString()}
 					data={referenceItems}
-					ItemSeparatorComponent={() => (
-						<ListItemSpacer />
-					)}
+
 					renderItem={({ item }) => (
 						<ReferenceListItem
 							name={item.name}

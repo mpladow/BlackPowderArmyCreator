@@ -71,7 +71,6 @@ const ArmyProvider = ({ children }) => {
 		let updatedDivision = { ...currentDivision };
 		// generate a new uuid
 		newBrigade.BrigadeId = uuid.v4().toString();
-		console.log(newBrigade, 'new brigade');
 		// update the array of all division brigades
 		let updatedBrigs = [...updatedDivision.Brigades, newBrigade];
 		updatedDivision.Brigades = updatedBrigs;
