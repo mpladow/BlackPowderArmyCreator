@@ -5,6 +5,7 @@ import Heading from './Heading';
 import { useTheme } from '@react-navigation/native';
 import { Entypo } from '@expo/vector-icons';
 import ModalArmyOptions from '../../Screens/Main/ListCreator/ListCreator/Modals/ModalArmyOptions';
+
 const ListItem = ({id, title, description, onPress}) => {
 	const theme = useTheme()
 	const [toggleModalVisible, setToggleModalVisible] = useState(false)

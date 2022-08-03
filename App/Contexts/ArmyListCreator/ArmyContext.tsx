@@ -18,6 +18,7 @@ interface ArmyContextInterface {
 	currentBrigade: Brigade;
 	setCurrentBrigade;
 	addBrigade;
+	updateBrigade;
 }
 const ArmyContext = createContext<ArmyContextInterface>(undefined);
 const ArmyProvider = ({ children }) => {
@@ -26,8 +27,8 @@ const ArmyProvider = ({ children }) => {
 
 	const [currentCommander, setCurrentCommander] = useState(undefined as Commander);
 
-	const [currentDivision, setCurrentDivision] = useState(undefined as Division)
-	const [currentBrigade, setCurrentBrigade] = useState(undefined as Brigade)
+	const [currentDivision, setCurrentDivision] = useState(undefined as Division);
+	const [currentBrigade, setCurrentBrigade] = useState(undefined as Brigade);
 
 	useEffect(() => {
 		// AsyncStorage.removeItem('USER_DIVISIONS_ALL');
@@ -35,6 +36,12 @@ const ArmyProvider = ({ children }) => {
 		getDivisionsFromMemory();
 	}, []);
 	// set armies everytime an army is added/removed/edited to memory
+	// when divisions are updated, update local storage
+	useEffect(() => {
+		// divisions updated
+		// console.log(divisions, 'divisions updated in useEffect');
+		updateArmiesListInMemory(divisions);
+	}, [divisions]);
 
 	const getDivisionsFromMemory = async () => {
 		const _armies = await AsyncStorage.getItem('USER_DIVISIONS_ALL');
@@ -47,31 +54,70 @@ const ArmyProvider = ({ children }) => {
 
 	const getDivisionById = (id) => {
 		let _div = divisions.find((x) => x.DivisionId == id);
-		console.log(_div, 'dov');
-		console.log(id, 'id');
 		setCurrentDivision(_div);
 		return _div;
 	};
 
 	const getBrigadeById = (id, divisionId) => {
-		let _division = divisions.find((x) => x.DivisionId == divisionId);
-		let _brigade = _division.Brigades.find((x) => x.BrigadeId == id)
+		// let _division = divisions.find((x) => x.DivisionId == divisionId);
+		let _brigade = currentDivision.Brigades.find((x) => x.BrigadeId == id);
 		setCurrentBrigade(_brigade);
+		setCurrentCommander(_brigade.Commander);
+		return _brigade;
 	};
 
 	const addBrigade = (newBrigade: Brigade) => {
-		let division = divisions.find((x) => x.DivisionId == newBrigade.DivisionId);
-		console.log(newBrigade);
-
-		newBrigade.BrigadeId = uuid.v4.toString();
-		let updatedBrigs = [...division.Brigades, newBrigade];
-		division.Brigades = updatedBrigs;
+		// create copy of existing division
+		let updatedDivision = { ...currentDivision };
+		// generate a new uuid
+		newBrigade.BrigadeId = uuid.v4().toString();
+		console.log(newBrigade, 'new brigade');
+		// update the array of all division brigades
+		let updatedBrigs = [...updatedDivision.Brigades, newBrigade];
+		updatedDivision.Brigades = updatedBrigs;
+		// update state with division with updated brigades
+		setCurrentDivision(updatedDivision);
+		// update localstorage
+		// update all divisions in state with this new updated division, which will trigger saving into local storage.
+		setDivisions((prevState) => {
+			const newState = prevState.map((div) => {
+				if (div.DivisionId == updatedDivision.DivisionId) {
+					return updatedDivision;
+				}
+				return div;
+			});
+			return newState;
+		});
+		setCurrentCommander(null);
 		// set as focused brigade
-		
-
 	};
 
-	const editBrigade = (newBrigade) => {};
+	const updateBrigade = (updated: Brigade) => {
+		let updatedDivision = { ...currentDivision };
+		let updatedBrigs = updatedDivision.Brigades.map((b) => {
+			if (b.BrigadeId == updated.BrigadeId) {
+				// update values - ensure we never mutate the original object
+				let newBrig = { ...b };
+
+				newBrig.BrigadeName = updated.BrigadeName;
+				newBrig.Commander = updated.Commander;
+				return newBrig;
+			}
+			return b;
+		});
+		updatedDivision.Brigades = updatedBrigs;
+		setCurrentDivision(updatedDivision);
+		setDivisions((prevState) => {
+			const newState = prevState.map((div) => {
+				if (div.DivisionId == updatedDivision.DivisionId) {
+					return updatedDivision;
+				}
+				return div;
+			});
+			return newState;
+		});
+		setCurrentCommander(null);
+	};
 
 	const addDivision = async (newArmy: Division) => {
 		const division = new Division();
@@ -126,6 +172,7 @@ const ArmyProvider = ({ children }) => {
 				currentBrigade,
 				setCurrentBrigade,
 				addBrigade,
+				updateBrigade,
 			}}
 		>
 			{children}

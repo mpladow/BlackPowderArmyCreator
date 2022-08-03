@@ -48,7 +48,7 @@ const HomeStack = () => {
 			<Stack.Screen
 				name='EditBrigade'
 				options={{
-					headerTitle: 'BrigadeDetails',
+					headerTitle: 'Edit Brigade',
 					presentation: 'modal',
 				}}
 				component={EditBrigade}
